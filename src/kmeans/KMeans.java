@@ -48,55 +48,60 @@ public class KMeans {
 		double change;
 		do {
 			change = trainIteration(data);
-			System.out.println(change);
 		} while (change > threshold);
+	}
+	
+	public int test(DataPoint datapoint) {
+		double minDistance = Double.MAX_VALUE;
+		int closestCenter = 0;
+		for (int center = 0; center < k; center++) {
+			double distance = dist.distance(datapoint.getFeatures(), centers.get(center));
+			if (distance < minDistance) {
+				minDistance = distance;
+				closestCenter = center;
+			}
+		}
+		return closestCenter;
 	}
 	
 	public double trainIteration(List<DataPoint> data) {
 		double change = 0.0;
 		for (DataPoint datapoint : data) {
-			double minDistance = Double.MAX_VALUE;
-			int closestCenter = 0;
-			for (int center = 0; center < k; center++) {
-				double distance = dist.distance(datapoint.getFeatures(), centers.get(center));
-				if (distance < minDistance) {
-					minDistance = distance;
-					closestCenter = center;
-				}
-			}
+			int closestCenter = test(datapoint);
 			clusters.put(datapoint, closestCenter);
-			change = calculateCenters();
 		}
+		change = calculateCenters(data);
 		return change;
 	}
 	
-	private double calculateCenters() {
+	private double calculateCenters(List<DataPoint> data) {
 		double change = 0.0;
 		List<List<List<Double>>> points = new ArrayList<>(k);
 		for (int cluster = 0; cluster < k; cluster++) {
 			List<List<Double>> clust = new ArrayList<>();
 			points.add(clust);
 		}
-		Iterator it = clusters.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry<DataPoint,Integer> pair = (Map.Entry)it.next();
-	        DataPoint datapoint = pair.getKey();
-	        int cluster = pair.getValue();
+		for (DataPoint datapoint : data) {
+			int cluster = clusters.get(datapoint);
 	    	points.get(cluster).add(datapoint.getFeatures());
-	        it.remove();
 	    }
+		
 	    // update centers
+	    //System.out.println(points.get(0).size() + " vs "+points.get(1).size());
 	    for (int center = 0; center < k; center++) {
 			for (int feature = 0; feature < numFeatures; feature++) {
 				double average = 0.0;
 				for (List<Double> point : points.get(center)) {
 					average += point.get(feature);
 				}
-				average /= points.get(center).size();
+				if (points.get(center).size() != 0)	
+					average /= points.get(center).size();
+				//System.out.println(Math.abs(average - centers.get(center).get(feature)));
 				change = Math.max(change, Math.abs(average - centers.get(center).get(feature)));
 				centers.get(center).set(feature, average);
 			}
 		}
+	    //System.out.println("CHANGE: "+change+"\n");
 	    return change;
 	}
 	

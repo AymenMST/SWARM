@@ -10,7 +10,7 @@ import driver.DataPoint;
 
 public class InputterSemeion extends Inputter {
 
-	private final String filePath = "datasets/optdigits.data";
+	private final String filePath = "datasets/semeion.data";
 
 	public InputterSemeion() {
 		inputs = 256;
@@ -20,6 +20,8 @@ public class InputterSemeion extends Inputter {
 
 	@Override
 	public void parseFile() {
+		
+		findClasses();
 
 		data = new ArrayList<>();
 		try {
@@ -27,7 +29,7 @@ public class InputterSemeion extends Inputter {
 
 			// loop through entire data file.
 			while (in.hasNext()) {
-				String[] split = in.nextLine().split(",");
+				String[] split = in.nextLine().split(" ");
 				List<Double> featureList = new ArrayList<>();
 
 				// loop through all features, building up the
@@ -50,11 +52,6 @@ public class InputterSemeion extends Inputter {
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found for yeast dataset.");
 			e.printStackTrace();
-		} finally {
-
-			// regardless of above, assign the possible classes to the
-			// possible classes list.
-			findClasses();
 		}
 
 	}
@@ -62,12 +59,14 @@ public class InputterSemeion extends Inputter {
 	private int getIndex(String[] split, int start) {
 		int index = -1;
 		for (int i = start; i < split.length; i++) {
-			if (split[i] == "1") {
+			if (split[i].equals("1")) {
 				if (index >= 0)
 					System.out.println("ERROR: Only one class may be assigned to each example.");
 				index = i - start;
 			}
 		}
+		if (index < 0)
+			System.out.println("ERROR: No class found.");
 		return index;
 	}
 

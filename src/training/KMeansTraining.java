@@ -14,20 +14,11 @@ public class KMeansTraining extends TrainingMethod {
 	}
 
 	public int classify(DataPoint datapoint) {
-		int outputClass = 0;
-		// TODO: use code from non-existent KMeans package to classify
-		return outputClass;
+		return kmeans.test(datapoint);
 	}
 
 	public void train(List<DataPoint> trainSet) {
-		
-		int classFound, classExpected;
-		for (DataPoint datapoint : trainSet) {
-			classFound = classify(datapoint);
-			classExpected = datapoint.getClassIndex();
-			kmeans.train(trainSet);
-		}
-		
+		kmeans.train(trainSet);
 	}
 	
 }

@@ -20,6 +20,8 @@ public class InputterPenDigits extends Inputter {
 
 	@Override
 	public void parseFile() {
+		
+		findClasses();
 
 		data = new ArrayList<>();
 		try {
@@ -50,11 +52,6 @@ public class InputterPenDigits extends Inputter {
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found for yeast dataset.");
 			e.printStackTrace();
-		} finally {
-
-			// regardless of above, assign the possible classes to the
-			// possible classes list.
-			findClasses();
 		}
 
 	}
