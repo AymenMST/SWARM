@@ -16,7 +16,11 @@ public class Simulator {
 
 		// get input data
 		Inputter inputter;
-		inputter = new InputterAbalone();
+		inputter = new InputterLetterRecognition();
+		inputter = new InputterPenDigits();
+		inputter = new InputterOpticalDigits();
+		inputter = new InputterSemeion();
+//		inputter = new InputterAbalone();
 //		inputter = new InputterBanknote();
 //		inputter = new InputterBlood();
 //		inputter = new InputterCar();
