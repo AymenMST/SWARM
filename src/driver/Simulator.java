@@ -35,7 +35,7 @@ public class Simulator {
 		
 		// parse data
 		inputter.parseFile();
-		inputter.truncate(maxDataSetSize);
+		//inputter.truncate(maxDataSetSize);
 		List<DataPoint> data = inputter.getData();
 		
 		TrainingMethod train;

@@ -14,7 +14,7 @@ public class KMeansTraining extends TrainingMethod {
 	}
 
 	public int classify(DataPoint datapoint) {
-		return kmeans.test(datapoint);
+		return kmeans.assign(datapoint);
 	}
 
 	public void train(List<DataPoint> trainSet) {

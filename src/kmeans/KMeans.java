@@ -18,7 +18,7 @@ public class KMeans {
 	private int k = 0;
 	private int numFeatures = 0;
 	// the amount of change allowable during an update of the algorithm for completion
-	private double threshold = 0.01;
+	private double threshold = 0.001;
 	// set the min and max values for the random center initialization
 	private double initCenterMin = -0.3;
 	private double initCenterMax =  0.3;
@@ -49,11 +49,12 @@ public class KMeans {
 		double change;
 		do {
 			change = trainIteration(data);
+			//System.out.print(String.format("%20s  : ",String.valueOf(change)));
 			//Simulator.printVector(centers.get(0));
 		} while (change > threshold);
 	}
 	
-	public int test(DataPoint datapoint) {
+	public int assign(DataPoint datapoint) {
 		double minDistance = Double.MAX_VALUE;
 		int closestCenter = 0;
 		for (int center = 0; center < k; center++) {
@@ -69,7 +70,7 @@ public class KMeans {
 	public double trainIteration(List<DataPoint> data) {
 		double change = 0.0;
 		for (DataPoint datapoint : data) {
-			int closestCenter = test(datapoint);
+			int closestCenter = assign(datapoint);
 			clusters.put(datapoint, closestCenter);
 		}
 		change = calculateCenters(data);
@@ -78,18 +79,24 @@ public class KMeans {
 	
 	private double calculateCenters(List<DataPoint> data) {
 		double change = 0.0;
+		// create points structure
 		List<List<List<Double>>> points = new ArrayList<>(k);
 		for (int cluster = 0; cluster < k; cluster++) {
 			List<List<Double>> clust = new ArrayList<>();
 			points.add(clust);
 		}
+		// add datapoints to points structure using clusters
 		for (DataPoint datapoint : data) {
+			// find the cluster index this point belongs to
 			int cluster = clusters.get(datapoint);
-	    	points.get(cluster).add(datapoint.getFeatures());
+			// get existing cluster
+			List<List<Double>> updated = points.get(cluster);
+			// add datapoint to cluster
+			updated.add(datapoint.getFeatures());
+			// update the cluster to use the new cluster
+			points.set(cluster, updated);
 	    }
-		
 	    // update centers
-	    //System.out.println(points.get(0).size() + " vs "+points.get(1).size());
 	    for (int center = 0; center < k; center++) {
 	    	List<Double> newCenter = new ArrayList<Double>();
 			for (int feature = 0; feature < numFeatures; feature++) {
@@ -97,8 +104,12 @@ public class KMeans {
 				for (List<Double> point : points.get(center)) {
 					average += point.get(feature);
 				}
+				
 				if (points.get(center).size() != 0)	
 					average /= points.get(center).size();
+				else
+					average = centers.get(center).get(feature);
+				
 				change = Math.max(change, Math.abs(average - centers.get(center).get(feature)));
 				newCenter.add(average);
 			}

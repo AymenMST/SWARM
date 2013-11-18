@@ -69,6 +69,9 @@ public abstract class TrainingMethod {
 			totalPerformance += performance;
 			totalElapsedTime += elapsedTime;
 			
+			// TODO: remove
+			break;
+			
 		}
 		
 		// calculate and display average performance and train time
