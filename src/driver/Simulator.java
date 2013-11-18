@@ -1,9 +1,10 @@
 package driver;
 
+import inputter.*;
+
 import java.util.List;
 
 import training.*;
-import driver.inputter.*;
 
 /**
  * Main driver used to test various classifier training algorithms.
@@ -16,12 +17,12 @@ public class Simulator {
 
 		// get input data
 		Inputter inputter;
-		inputter = new InputterLetterRecognition();
-		inputter = new InputterPenDigits();
-		inputter = new InputterOpticalDigits();
-		inputter = new InputterSemeion();
+//		inputter = new InputterLetterRecognition();
+//		inputter = new InputterPenDigits();
+//		inputter = new InputterOpticalDigits();
+//		inputter = new InputterSemeion();
 //		inputter = new InputterAbalone();
-//		inputter = new InputterBanknote();
+		inputter = new InputterBanknote();
 //		inputter = new InputterBlood();
 //		inputter = new InputterCar();
 //		inputter = new InputterEEGEyeState();
