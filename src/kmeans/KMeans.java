@@ -10,6 +10,7 @@ import java.util.Random;
 import Distance.Distance;
 import Distance.Euclidean;
 import driver.DataPoint;
+import driver.Simulator;
 
 public class KMeans {
 	
@@ -48,6 +49,7 @@ public class KMeans {
 		double change;
 		do {
 			change = trainIteration(data);
+			//Simulator.printVector(centers.get(0));
 		} while (change > threshold);
 	}
 	
@@ -89,6 +91,7 @@ public class KMeans {
 	    // update centers
 	    //System.out.println(points.get(0).size() + " vs "+points.get(1).size());
 	    for (int center = 0; center < k; center++) {
+	    	List<Double> newCenter = new ArrayList<Double>();
 			for (int feature = 0; feature < numFeatures; feature++) {
 				double average = 0.0;
 				for (List<Double> point : points.get(center)) {
@@ -96,10 +99,10 @@ public class KMeans {
 				}
 				if (points.get(center).size() != 0)	
 					average /= points.get(center).size();
-				//System.out.println(Math.abs(average - centers.get(center).get(feature)));
 				change = Math.max(change, Math.abs(average - centers.get(center).get(feature)));
-				centers.get(center).set(feature, average);
+				newCenter.add(average);
 			}
+			centers.set(center, newCenter);
 		}
 	    //System.out.println("CHANGE: "+change+"\n");
 	    return change;
