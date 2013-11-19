@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import Distance.Distance;
-import Distance.Euclidean;
+import distance.Distance;
+import distance.Euclidean;
 import driver.DataPoint;
 import driver.Simulator;
 
@@ -70,7 +70,7 @@ public class KMeans {
 		}
 		
 		for (DataPoint datapoint : data) {
-			int center = assign(datapoint);
+			int center = classify(datapoint);
 			int oldValue = distribution.get(center).get(datapoint.getClassIndex());
 			distribution.get(center).set(datapoint.getClassIndex(), oldValue + 1);
 		}
@@ -97,7 +97,7 @@ public class KMeans {
 		centers = newCenters;
 	}
 	
-	public int assign(DataPoint datapoint) {
+	public int classify(DataPoint datapoint) {
 		double minDistance = Double.MAX_VALUE;
 		int closestCenter = 0;
 		for (int center = 0; center < k; center++) {
@@ -113,7 +113,7 @@ public class KMeans {
 	public double trainIteration(List<DataPoint> data) {
 		double change = 0.0;
 		for (DataPoint datapoint : data) {
-			int closestCenter = assign(datapoint);
+			int closestCenter = classify(datapoint);
 			clusters.put(datapoint, closestCenter);
 		}
 		change = calculateCenters(data);

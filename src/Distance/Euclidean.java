@@ -1,4 +1,4 @@
-package Distance;
+package distance;
 
 import java.util.List;
 
