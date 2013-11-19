@@ -2,7 +2,6 @@ package kmeans;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -52,6 +51,50 @@ public class KMeans {
 			//System.out.print(String.format("%20s  : ",String.valueOf(change)));
 			//Simulator.printVector(centers.get(0));
 		} while (change > threshold);
+		
+		orderCenters(data);
+		
+	}
+	
+	// This is a mess right now, but it seems to be doing the job.
+	// It reorders the clusters that k-means found to match the correct centers.
+	// Will clean up / optimize later
+	private void orderCenters(List<DataPoint> data) {
+		
+		int size = data.get(0).getOutputs().size();
+		List<List<Integer>> distribution = new ArrayList<>(size);
+		for (int i = 0; i < size; i++) {
+			distribution.add(new ArrayList<Integer>(size));
+			for (int j = 0; j < size; j++)
+				distribution.get(i).add(0);
+		}
+		
+		for (DataPoint datapoint : data) {
+			int center = assign(datapoint);
+			int oldValue = distribution.get(center).get(datapoint.getClassIndex());
+			distribution.get(center).set(datapoint.getClassIndex(), oldValue + 1);
+		}
+			
+		// reorder centers
+		List<Integer> chosenIndexes = new ArrayList<Integer>(size);
+		List<List<Double>> newCenters = new ArrayList<>();
+		for (int center = 0; center < distribution.size(); center++)
+			newCenters.add(new ArrayList<Double>());
+		for (int center = 0; center < distribution.size(); center++) {
+			int max = -1;
+			int maxIndex = 0;
+			for (int newCenter = 0; newCenter < distribution.get(center).size(); newCenter++) {
+				int val = distribution.get(center).get(newCenter);
+				if (val > max && !chosenIndexes.contains(newCenter)) {
+					max = val;
+					maxIndex = newCenter;
+				}
+			}
+			chosenIndexes.add(maxIndex);
+			newCenters.set(maxIndex, centers.get(center));
+		}
+		
+		centers = newCenters;
 	}
 	
 	public int assign(DataPoint datapoint) {
