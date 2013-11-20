@@ -9,7 +9,6 @@ import java.util.Random;
 import distance.Distance;
 import distance.Euclidean;
 import driver.DataPoint;
-import driver.Simulator;
 
 public class KMeans {
 	

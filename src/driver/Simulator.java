@@ -13,6 +13,12 @@ public class Simulator {
 
 	public static void main(String[] args) {
 		
+		
+		
+		
+		
+		
+		
 		int maxDataSetSize = 1000;
 
 		// get input data

@@ -1,5 +1,8 @@
 package graph;
 
-public class Graph {
+import edu.uci.ics.jung.graph.DelegateForest;
+
+public class Graph extends DelegateForest<Node, Edge> {
+
 
 }
