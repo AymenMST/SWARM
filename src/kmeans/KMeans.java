@@ -25,8 +25,8 @@ public class KMeans {
 	// the map that keeps track of which center datapoints are assigned to
 	private Map<DataPoint, Integer> clusters = new HashMap<DataPoint, Integer>();
 	
-	Random random = new Random(11235);
-	Distance dist = new Euclidean();
+	private Random random = new Random(11235);
+	private Distance dist = new Euclidean();
 	
 	public KMeans() {
 		
