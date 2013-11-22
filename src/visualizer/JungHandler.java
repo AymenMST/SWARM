@@ -1,5 +1,7 @@
 package visualizer;
 
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 
 import edu.uci.ics.jung.algorithms.layout.Layout;
@@ -27,18 +29,19 @@ public class JungHandler {
 
 		nodeColor = new NodeColor();
 
-		viewer.setRenderContext(new PluggableRenderContext<Node, Edge>());
+		//viewer.setRenderContext(new PluggableRenderContext<Node, Edge>());
 
 		for (Node n : forest.getVertices()) {
 			layout.setLocation(n, n.getLocation());
-			nodeColor.paintVertex(viewer.getRenderContext(), layout, n);
-			viewer.getRenderer().setVertexRenderer(nodeColor);
+			//nodeColor.paintVertex(viewer.getRenderContext(), layout, n);
+			//viewer.getRenderer().setVertexRenderer(nodeColor);
 		}
 
 		frame = new JFrame("Simple Graph View");
+		frame.setSize(new Dimension(1000, 1000));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(viewer);
-		frame.pack();
+		//frame.pack();
 		frame.setVisible(true);
 
 	}

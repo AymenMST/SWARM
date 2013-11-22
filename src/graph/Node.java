@@ -1,6 +1,5 @@
 package graph;
 
-import java.awt.Point;
 import java.awt.geom.Point2D;
 
 import driver.DataPoint;
@@ -8,14 +7,14 @@ import driver.DataPoint;
 public class Node {
 
 	private DataPoint dataPoint;
-	private Point2D location;
+	private Point2D.Double location;
 
 	public Node(DataPoint dataPoint) {
 		this.dataPoint = dataPoint;
-		location = new Point(0, 0);
+		location = new Point2D.Double(0, 0);
 	}
 
-	public Node(DataPoint dataPoint, Point2D location) {
+	public Node(DataPoint dataPoint, Point2D.Double location) {
 		this.dataPoint = dataPoint;
 		this.location = location;
 	}
@@ -28,11 +27,11 @@ public class Node {
 		this.dataPoint = dataPoint;
 	}
 
-	public Point2D getLocation() {
+	public Point2D.Double getLocation() {
 		return location;
 	}
 
-	public void setLocation(Point2D location) {
+	public void setLocation(Point2D.Double location) {
 		this.location = location;
 	}
 

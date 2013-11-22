@@ -4,13 +4,16 @@ import graph.Edge;
 import graph.Graph;
 import graph.Node;
 import inputter.Inputter;
-import inputter.InputterLetterRecognition;
+import inputter.InputterBanknote;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Random;
 
 import visualizer.JungHandler;
+import clustering.ClusteringMethod;
+import clustering.KMeansClustering;
 import edu.uci.ics.jung.graph.Forest;
 
 /**
@@ -20,16 +23,16 @@ public class Simulator {
 
 	public static void main(String[] args) {
 
-		int maxDataSetSize = 5;
+		int maxDataSetSize = 1000;
 
 		// get input data
 		Inputter inputter;
-		inputter = new InputterLetterRecognition();
+		//inputter = new InputterLetterRecognition();
 		// inputter = new InputterPenDigits();
 		// inputter = new InputterOpticalDigits();
 		// inputter = new InputterSemeion();
 		// inputter = new InputterAbalone();
-		// inputter = new InputterBanknote();
+		 inputter = new InputterBanknote();
 		// inputter = new InputterBlood();
 		// inputter = new InputterCar();
 		// inputter = new InputterEEGEyeState();
@@ -46,36 +49,28 @@ public class Simulator {
 
 		Forest<Node, Edge> g = new Graph();
 
-		int xSpace = 100;
-		int ySpace = 100;
+		int xSpace = 500;
+		int ySpace = 500;
 
 		Random rand = new Random();
 
+		//Banknote = (point1 + 20) * 20
 		for (DataPoint d : data) {
 			int x = rand.nextInt(xSpace);
 			int y = rand.nextInt(ySpace);
-			g.addVertex(new Node(d, new Point(x, y)));
+			double point1 = d.getFeatures().get(0);
+			double point2 = d.getFeatures().get(3);
+			g.addVertex(new Node(d, new Point2D.Double((point1 + 20) * 20, (point2 + 20) * 20)));
 		}
-		
+
 		JungHandler jungHandler = new JungHandler(g);
 
-		// TrainingMethod train;
+		ClusteringMethod cluster;
 
 		// Test K Means
 
-		// train = new KMeansTraining(data);
-
-		// Test Competitive Learning
-		// train = new CompetitiveLearningTraining(data);
-
-		// Test ACO
-		// train = new ACOTraining(data);
-
-		// Test PSO
-		// train = new PSOTraining(data);
-
-		// train.mainLoop(10);
-
+		cluster = new KMeansClustering(data);
+		cluster.run();
 	}
 
 	// Utility function used in debugging to print vectors.
