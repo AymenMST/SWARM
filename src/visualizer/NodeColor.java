@@ -12,6 +12,7 @@ import graph.Node;
 
 public class NodeColor implements Renderer.Vertex<Node, Edge> {
 
+
 	@Override
 	public void paintVertex(RenderContext<Node, Edge> rc, Layout<Node, Edge> layout, Node node) {
 		GraphicsDecorator graphicsContext = rc.getGraphicsContext();
