@@ -16,5 +16,11 @@ public class ACOClustering extends ClusteringMethod {
 		
 	}
 
+	@Override
+	public List<List<Double>> getCenters() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

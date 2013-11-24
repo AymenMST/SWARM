@@ -60,6 +60,8 @@ public abstract class ClusteringMethod {
 		double performance = 0;
 		return performance;
 	}
+	
+	public abstract List<List<Double>> getCenters();
 
 
 }
