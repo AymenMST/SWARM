@@ -51,7 +51,8 @@ public class Simulator {
 		
 		// Test ACO
 		cluster = new ACOClustering(data);
-		cluster.setVisualize(true);
+		//cluster.setVisualize(true);
+		cluster.setStartVisualize(500);
 		cluster.run();
 		
 	}

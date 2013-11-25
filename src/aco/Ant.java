@@ -16,8 +16,8 @@ public class Ant {
 	double lastMoveX = 0;
 	double lastMoveY = 0;
 	Node holding = null;
-	Color colorEmpty = Color.CYAN;
-	Color colorHolding = Color.BLUE;
+	Color colorEmpty = Color.MAGENTA;
+	Color colorHolding = Color.RED;
 	Color color = colorEmpty;
 	Random rand = new Random(11235);
 	double pickupProbability = 0.5;
@@ -57,7 +57,10 @@ public class Ant {
 	}
 	
 	
-	public boolean pickup(List<Node> neighborhood) {
+	public boolean pickup(List<Node> neighborhood, double density) {
+		
+		if (rand.nextDouble() < pickupProbability(density))
+			return false;
 		
 		boolean didPickUp = false;
 		double greatestError = 0;
@@ -66,7 +69,7 @@ public class Ant {
 		
 		Node toPickUp = null;
 		
-		// with some probability, pick up
+		// calculate most dis-similar
 		for (Node current : neighborhood) {
 			runningError = 0;
 			for (Node neighbor : neighborhood){
@@ -91,19 +94,25 @@ public class Ant {
 	
 		double probability = (avgError / greatestError);
 		
-		System.out.println(("Neighborhood size: " + neighborhood.size() + " Probability: " + probability));
-		//TODO remove this threshold, instead choose a value probabilistically.
-		if (probability > pickupProbability) {
-			holding = toPickUp;
-			color = colorHolding;
-			didPickUp = true;
-		}
+//		System.out.println(("Neighborhood size: " + neighborhood.size() + " Probability: " + probability));
+//		if (probability > pickupProbability) {
+//			holding = toPickUp;
+//			color = colorHolding;
+//		}
 		
-		return didPickUp;
+		holding = toPickUp;
+		color = colorHolding;
+		
+		return true;
 		
 	}
 	
-	public boolean drop(List<Node> neighbors) {
+	public boolean drop(List<Node> neighbors, double density) {
+		
+//		System.out.println(1 - pickupProbability(density));
+		
+		if (rand.nextDouble() < (1 - pickupProbability(density)))
+			return false;
 		
 		boolean didDrop = true;
 		// with some probability, drop
@@ -112,6 +121,12 @@ public class Ant {
 		holding = null;
 		color = colorEmpty;
 		return didDrop;
+	}
+	
+	public double pickupProbability(double density) {
+		double probability = 0.0;
+		probability = (1 - density) * 0.8;	// TODO: change this to match Sheppard's algorithm
+		return probability;
 	}
 	
 	public boolean isHolding() {

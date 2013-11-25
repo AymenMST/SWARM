@@ -24,7 +24,7 @@ public class ACO {
 	Forest<Node, Edge> g = new Graph();
 	Colony colony;
 	
-	int numAnts = 1;
+	int numAnts = 5;
 	int xSpace = 1000;
 	int ySpace = 1000;
 	

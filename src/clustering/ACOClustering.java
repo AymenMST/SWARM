@@ -24,7 +24,10 @@ public class ACOClustering extends ClusteringMethod {
 
 	@Override
 	public void cluster() {
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 1000; i++) {
+			if (i == startVisualize) {
+				visualize = true;
+			}
 			if (visualize) {
 				try {
 					Thread.sleep(200);

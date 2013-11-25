@@ -57,13 +57,11 @@ public class Colony {
 			// calculate and bound X
 			double newX = ant.getX() + moveX;
 			if (newX < 0 || newX > xSpace) {
-				System.out.println("BOUNDED!!!");
 				moveX = -moveX;
 			}
 			// calculate and bound Y
 			double newY = ant.getY() + moveY;
 			if (newY < 0 || newY > ySpace) {
-				System.out.println("BOUNDED!!!");
 				moveY = -moveY;
 			}
 			
@@ -84,17 +82,20 @@ public class Colony {
 					neighborhood.add(vertex);
 				}
 			}
-			//System.out.println(neighborhood.size());
+			
+			double density = (double)neighborhood.size() / g.getVertexCount();
+			
 			if (!ant.isHolding()){
-				if (ant.pickup(neighborhood)){
+				if (ant.pickup(neighborhood, density)){
 				
 					g.removeVertex(ant.getHolding());
 				}
 			}else{
 				Node temp = ant.getHolding();
-				if (ant.drop(neighborhood)){
+				if (ant.drop(neighborhood, density)){
 					temp.setLocation(ant.getLocation());
 					temp.setColor(Color.ORANGE);
+					temp.setAlpha(0.2);
 					g.addVertex(temp);
 					
 				}

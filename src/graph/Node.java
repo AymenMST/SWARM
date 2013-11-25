@@ -11,7 +11,7 @@ public class Node {
 
 	private DataPoint dataPoint;
 	private Point2D.Double location;
-	private Color color = Color.RED;
+	private Color color = Color.BLUE;
 	private int layer = 0;
 
 	public Node(DataPoint dataPoint) {
@@ -48,8 +48,9 @@ public class Node {
 	}
 	
 	public void setColor(Color color) {
+		double alpha = getAlpha();
 		this.color = color;
-		
+		setAlpha(alpha);
 	}
 	
 	public Color getColor() {
@@ -70,8 +71,7 @@ public class Node {
 	
 	@SuppressWarnings("static-access")
 	public double getAlpha() {
-		
-		return (double) color.TRANSLUCENT / 255;
+		return (double)Math.round(((double)color.getAlpha()/255) * 100) / 100;
 	}
 
 }
