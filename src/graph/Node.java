@@ -2,6 +2,8 @@ package graph;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import driver.DataPoint;
 
@@ -33,6 +35,13 @@ public class Node {
 	public Point2D.Double getLocation() {
 		return location;
 	}
+	
+	public List<Double> getLocationVector() {
+		List<Double> vector = new ArrayList<Double>(2);
+		vector.add(location.x);
+		vector.add(location.y);
+		return vector;
+	}
 
 	public void setLocation(Point2D.Double location) {
 		this.location = location;
@@ -58,6 +67,7 @@ public class Node {
 		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (alpha * 255));
 	}
 	
+	@SuppressWarnings("static-access")
 	public double getAlpha() {
 		return (double) color.TRANSLUCENT / 255;
 	}

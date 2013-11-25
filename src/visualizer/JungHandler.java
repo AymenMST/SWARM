@@ -3,8 +3,6 @@ package visualizer;
 import java.awt.Dimension;
 import java.awt.Paint;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -25,7 +23,11 @@ public class JungHandler {
 	private BasicVisualizationServer<Node, Edge> viewer;
 	private JFrame frame = new JFrame("Simple Graph View");
 
-	public JungHandler(Forest<Node, Edge> forest) {
+	public JungHandler() {
+		
+	}
+	
+	public void setGraph(Forest<Node, Edge> forest) {
 		//forest = sortByLayer(forest);
 		layout = new TreeLayout<>(forest);
 		viewer = new BasicVisualizationServer<>(layout);

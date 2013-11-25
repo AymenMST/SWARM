@@ -2,7 +2,13 @@ package clustering;
 
 import java.util.List;
 
+import visualizer.JungHandler;
+
 import driver.DataPoint;
+import edu.uci.ics.jung.graph.Forest;
+import graph.Edge;
+import graph.Graph;
+import graph.Node;
 
 /**
  * Abstract Training Method class. Implementations are capable of training a
@@ -12,6 +18,9 @@ public abstract class ClusteringMethod {
 
 	protected int outIndex;
 	protected List<DataPoint> data;
+	protected boolean visualize = false;
+	protected Forest<Node, Edge> g = new Graph();
+	protected JungHandler jungHandler = new JungHandler();
 
 	/**
 	 * Constructs a generic TrainingMethod class.
@@ -62,6 +71,10 @@ public abstract class ClusteringMethod {
 	}
 	
 	public abstract List<List<Double>> getCenters();
+	
+	public void setVisualize(boolean visualize) {
+		this.visualize = visualize;
+	}
 
 
 }

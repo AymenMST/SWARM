@@ -1,10 +1,17 @@
 package clustering;
 
+import graph.Graph;
+import graph.Node;
+
+import java.awt.Color;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import visualizer.JungHandler;
 
 import kmeans.KMeans;
 import distance.Distance;
@@ -33,6 +40,37 @@ public class KMeansClustering extends ClusteringMethod {
 	public KMeansClustering(List<DataPoint> data) {
 		super(data);
 	}
+	
+	public void drawGraph() {
+		
+		g = new Graph();
+		
+		int dim1 = 1;
+		int dim2 = 2;
+		
+		// add data points
+		for (DataPoint d : data) {
+			double point1 = d.getFeatures().get(dim1);
+			double point2 = d.getFeatures().get(dim2);
+			Node vertex = new Node(d, new Point2D.Double((point1 + 20) * 20, (point2 + 20) * 20));
+			vertex.setAlpha(0.1);
+			g.addVertex(vertex);
+		}
+		
+		// add centers
+		for (List<Double> center : centers) {
+			double point1 = center.get(dim1);
+			double point2 = center.get(dim2);
+			Node node = new Node(null, new Point2D.Double((point1 + 20) * 20, (point2 + 20) * 20));
+			node.setColor(Color.GREEN);
+			node.setLayer(1);
+			g.addVertex(node);
+		}
+		
+		jungHandler.setGraph(g);
+		jungHandler.draw();
+		
+	}
 
 	/**
 	 * @param data
@@ -46,12 +84,17 @@ public class KMeansClustering extends ClusteringMethod {
 
 		// set up the new list of centers
 		initializeCenters();
+			
+		if (visualize)
+			drawGraph();
 
 		double change;
 		do {
 			change = trainIteration(data);
 			// System.out.print(String.format("%20s  : ",String.valueOf(change)));
 			// Simulator.printVector(centers.get(0));
+			if (visualize)
+				drawGraph();
 		} while (change > threshold);
 		
 		for (List<Double> center : centers){
