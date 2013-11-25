@@ -24,7 +24,7 @@ public class ACO {
 	Forest<Node, Edge> g = new Graph();
 	Colony colony;
 	
-	int numAnts = 5;
+	int numAnts = 1;
 	int xSpace = 1000;
 	int ySpace = 1000;
 	
@@ -38,9 +38,7 @@ public class ACO {
 		for (DataPoint d : data) {
 			int x = rand.nextInt(xSpace);
 			int y = rand.nextInt(ySpace);
-			double point1 = d.getFeatures().get(1);
-			double point2 = d.getFeatures().get(2);
-			Node vertex = new Node(d, new Point2D.Double((point1 + 20) * 20, (point2 + 20) * 20));
+			Node vertex = new Node(d, new Point2D.Double(x, y));
 			vertex.setAlpha(0.1);
 			g.addVertex(vertex);
 		}

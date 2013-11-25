@@ -53,6 +53,11 @@ public class KMeansClustering extends ClusteringMethod {
 			double point1 = d.getFeatures().get(dim1);
 			double point2 = d.getFeatures().get(dim2);
 			Node vertex = new Node(d, new Point2D.Double((point1 + 20) * 20, (point2 + 20) * 20));
+			
+			//Add color to nodes here
+			if (d.getClassIndex() == 0){
+				vertex.setColor(Color.CYAN);
+			}
 			vertex.setAlpha(0.1);
 			g.addVertex(vertex);
 		}

@@ -24,7 +24,12 @@ public class ACOClustering extends ClusteringMethod {
 
 	@Override
 	public void cluster() {
-		for (int i = 0; i < 500; i++) {
+		for (int i = 0; i < 100; i++) {
+			if (visualize) {
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {	e.printStackTrace();	}
+			}
 			aco.runIteration();
 			if (visualize)
 				drawGraph();
@@ -35,9 +40,6 @@ public class ACOClustering extends ClusteringMethod {
 		
 		g = new Graph();
 		
-		int dim1 = 1;
-		int dim2 = 2;
-		
 		// add data points
 		for (Node vertex : aco.getGraph().getVertices()) {
 			g.addVertex(vertex);
@@ -46,6 +48,7 @@ public class ACOClustering extends ClusteringMethod {
 		// add ants
 		for (Ant ant : aco.getAnts()) {
 			Node node = new Node(null, ant.getLocation());
+			
 			node.setColor(ant.getColor());
 			node.setLayer(1);
 			g.addVertex(node);

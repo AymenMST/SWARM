@@ -1,8 +1,5 @@
 package driver;
 
-import graph.Edge;
-import graph.Graph;
-import graph.Node;
 import inputter.Inputter;
 import inputter.InputterBanknote;
 
@@ -10,7 +7,7 @@ import java.util.List;
 
 import clustering.ACOClustering;
 import clustering.ClusteringMethod;
-import edu.uci.ics.jung.graph.Forest;
+import clustering.KMeansClustering;
 
 /**
  * Main driver used to test various classifier training algorithms.
@@ -43,7 +40,7 @@ public class Simulator {
 		inputter.truncate(maxDataSetSize);
 		List<DataPoint> data = inputter.getData();
 
-		Forest<Node, Edge> g = new Graph();
+		
 
 		ClusteringMethod cluster;
 

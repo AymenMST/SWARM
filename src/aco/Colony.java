@@ -1,5 +1,6 @@
 package aco;
 
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +14,14 @@ import graph.Node;
 
 public class Colony {
 	
+	private int neighborhoodSize = 20;
 	int xSpace;
 	int ySpace;
 	List<Ant> ants = new ArrayList<Ant>();
 	Random rand = new Random(11235);
-	double momentum = 0.1;
-	int maxMoveX = 10;	// TODO: change ant position to double
-	int maxMoveY = 10;
+	double momentum = 1.0;
+	int maxMoveX = 25;	// TODO: change ant position to double
+	int maxMoveY = 25;
 	double moveX = 0;
 	double moveY = 0;
 	Distance distance = new Euclidean();
@@ -45,43 +47,58 @@ public class Colony {
 	}
 	
 	public void move() {
+		
 		for (Ant ant : ants) {
+			
 			// randomly get movement
-			moveX = (rand.nextDouble()*maxMoveX*2 - maxMoveX) + ant.getLastMoveX() * momentum;
-			if (moveX > maxMoveX)
-				moveX = maxMoveX;
-			else if (moveX < -maxMoveX)
-				moveX = -maxMoveX;
-			moveY = (rand.nextDouble()*maxMoveY*2 - maxMoveY) + ant.getLastMoveY() * momentum;
-			if (moveY > maxMoveY)
-				moveY = maxMoveY;
-			else if (moveY < -maxMoveY)
-				moveY = -maxMoveY;
+			moveX = (rand.nextDouble()*maxMoveX*2 - maxMoveX);
+			moveY = (rand.nextDouble()*maxMoveY*2 - maxMoveY);
+
 			// calculate and bound X
 			double newX = ant.getX() + moveX;
-			if (newX < 0 || newX > xSpace)
+			if (newX < 0 || newX > xSpace) {
+				System.out.println("BOUNDED!!!");
 				moveX = -moveX;
+			}
 			// calculate and bound Y
 			double newY = ant.getY() + moveY;
-			if (newY < 0 || newY > ySpace)
+			if (newY < 0 || newY > ySpace) {
+				System.out.println("BOUNDED!!!");
 				moveY = -moveY;
+			}
+			
 			// move ant
 			ant.move(moveX, moveY);
+			
 		}
 	}
 	
 	public void act(Forest<Node, Edge> g) {
 		for (Ant ant : ants) {
-			double minDistance = Double.MAX_VALUE;
-			Node nearest = null;
+			List<Node> neighborhood = new ArrayList<>();
+		
+			
 			for (Node vertex : g.getVertices()) {
 				double dist = distance.distance(vertex.getLocationVector(), ant.getLocationVector());
-				if (dist < minDistance) {
-					minDistance = dist;
-					nearest = vertex;
+				if (dist < neighborhoodSize) {
+					neighborhood.add(vertex);
 				}
 			}
-			ant.act(0.0, nearest);
+			//System.out.println(neighborhood.size());
+			if (!ant.isHolding()){
+				if (ant.pickup(neighborhood)){
+				
+					g.removeVertex(ant.getHolding());
+				}
+			}else{
+				Node temp = ant.getHolding();
+				if (ant.drop(neighborhood)){
+					temp.setLocation(ant.getLocation());
+					temp.setColor(Color.ORANGE);
+					g.addVertex(temp);
+					
+				}
+			}
 		}
 	}
 	

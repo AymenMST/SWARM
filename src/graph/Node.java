@@ -49,6 +49,7 @@ public class Node {
 	
 	public void setColor(Color color) {
 		this.color = color;
+		
 	}
 	
 	public Color getColor() {
@@ -69,6 +70,7 @@ public class Node {
 	
 	@SuppressWarnings("static-access")
 	public double getAlpha() {
+		
 		return (double) color.TRANSLUCENT / 255;
 	}
 

@@ -6,9 +6,9 @@ import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-import distance.Distance;
-import distance.Euclidean;
+import javax.vecmath.Point2d;
 
 public class Ant {
 	
@@ -19,7 +19,8 @@ public class Ant {
 	Color colorEmpty = Color.CYAN;
 	Color colorHolding = Color.BLUE;
 	Color color = colorEmpty;
-	Distance distance = new Euclidean();
+	Random rand = new Random(11235);
+	double pickupProbability = 0.5;
 	
 	public Ant(Point2D.Double location) {
 		this.location = location;
@@ -38,7 +39,7 @@ public class Ant {
 	}
 	
 	public Point2D.Double getLocation() {
-		return location;
+		return new Point2D.Double(location.x, location.y);
 	}
 	
 	public List<Double> getLocationVector() {
@@ -55,23 +56,62 @@ public class Ant {
 		location.y += y;
 	}
 	
-	public void act(double density, Node nearest) {
-		pickup(density, nearest);
-	}
 	
-	private void pickup(double density, Node nearest) {
+	public boolean pickup(List<Node> neighborhood) {
+		
+		boolean didPickUp = false;
+		double greatestError = 0;
+		double runningError = 0;
+		double avgError = 0;
+		
+		Node toPickUp = null;
+		
 		// with some probability, pick up
-		double dist = distance.distance(nearest.getLocationVector(), this.getLocationVector());
-		if (dist < 20) {
-			holding = nearest;
-			color = colorHolding;
+		for (Node current : neighborhood) {
+			runningError = 0;
+			for (Node neighbor : neighborhood){
+				if (current != neighbor){
+					
+					for (int featureNum = 0; featureNum < current.getDataPoint().getFeatures().size(); featureNum++){
+						Double currentFeature = current.getDataPoint().getFeatures().get(featureNum);
+						Double neighborFeature = neighbor.getDataPoint().getFeatures().get(featureNum);
+						runningError += Math.abs(currentFeature - neighborFeature);
+					}
+				}
+			}
+			if (runningError > greatestError){
+				greatestError = runningError;
+				toPickUp = current;
+			}
+			avgError += runningError;
 		}
+
+		avgError /= (neighborhood.size());
+		
+	
+		double probability = (avgError / greatestError);
+		
+		System.out.println(("Neighborhood size: " + neighborhood.size() + " Probability: " + probability));
+		//TODO remove this threshold, instead choose a value probabilistically.
+		if (probability > pickupProbability) {
+			holding = toPickUp;
+			color = colorHolding;
+			didPickUp = true;
+		}
+		
+		return didPickUp;
+		
 	}
 	
-	private void drop(double density) {
+	public boolean drop(List<Node> neighbors) {
+		
+		boolean didDrop = true;
 		// with some probability, drop
+		
+		//holding.setLocation(this.location);
 		holding = null;
 		color = colorEmpty;
+		return didDrop;
 	}
 	
 	public boolean isHolding() {
