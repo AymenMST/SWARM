@@ -20,7 +20,9 @@ public class Ant {
 	Color colorHolding = Color.RED;
 	Color color = colorEmpty;
 	Random rand = new Random(11235);
-	double pickupProbability = 0.5;
+	double pickupGain = 0.05;
+	double dropGain = 0.00005;
+	double lastError;
 	
 	public Ant(Point2D.Double location) {
 		this.location = location;
@@ -59,13 +61,13 @@ public class Ant {
 	
 	public boolean pickup(List<Node> neighborhood, double density) {
 		
-		if (rand.nextDouble() < pickupProbability(density))
+//		System.out.println(pickupProbability(density));
+		
+		if (rand.nextDouble() > pickupProbability(density))
 			return false;
 		
-		boolean didPickUp = false;
 		double greatestError = 0;
 		double runningError = 0;
-		double avgError = 0;
 		
 		Node toPickUp = null;
 		
@@ -74,7 +76,6 @@ public class Ant {
 			runningError = 0;
 			for (Node neighbor : neighborhood){
 				if (current != neighbor){
-					
 					for (int featureNum = 0; featureNum < current.getDataPoint().getFeatures().size(); featureNum++){
 						Double currentFeature = current.getDataPoint().getFeatures().get(featureNum);
 						Double neighborFeature = neighbor.getDataPoint().getFeatures().get(featureNum);
@@ -86,20 +87,9 @@ public class Ant {
 				greatestError = runningError;
 				toPickUp = current;
 			}
-			avgError += runningError;
 		}
-
-		avgError /= (neighborhood.size());
 		
-	
-		double probability = (avgError / greatestError);
-		
-//		System.out.println(("Neighborhood size: " + neighborhood.size() + " Probability: " + probability));
-//		if (probability > pickupProbability) {
-//			holding = toPickUp;
-//			color = colorHolding;
-//		}
-		
+		lastError = greatestError / (neighborhood.size() - 1);
 		holding = toPickUp;
 		color = colorHolding;
 		
@@ -107,26 +97,42 @@ public class Ant {
 		
 	}
 	
-	public boolean drop(List<Node> neighbors, double density) {
+	public boolean drop(List<Node> neighborhood, double density) {
 		
-//		System.out.println(1 - pickupProbability(density));
-		
-		if (rand.nextDouble() < (1 - pickupProbability(density)))
+		if (rand.nextDouble() > dropProbability(density))
 			return false;
 		
-		boolean didDrop = true;
-		// with some probability, drop
+		double runningError = 0;
+		for (Node neighbor : neighborhood){
+			if (holding != neighbor){
+				for (int featureNum = 0; featureNum < holding.getDataPoint().getFeatures().size(); featureNum++){
+					Double currentFeature = holding.getDataPoint().getFeatures().get(featureNum);
+					Double neighborFeature = neighbor.getDataPoint().getFeatures().get(featureNum);
+					runningError += Math.abs(currentFeature - neighborFeature);
+				}
+			}
+		}
 		
-		//holding.setLocation(this.location);
-		holding = null;
-		color = colorEmpty;
-		return didDrop;
+		double newError = runningError / (neighborhood.size() - 1);
+		// if error has been reduced from when the node was picked up, drop node
+		if (newError < lastError){
+			holding = null;
+			color = colorEmpty;
+			return true;
+		} else {
+			lastError *= 1.05;
+			return false;
+		}
+		
+		
 	}
 	
 	public double pickupProbability(double density) {
-		double probability = 0.0;
-		probability = (1 - density) * 0.8;	// TODO: change this to match Sheppard's algorithm
-		return probability;
+		return Math.pow((pickupGain / (pickupGain + density)), 2);
+	}
+	
+	public double dropProbability(double density) {
+		return Math.pow((density / (dropGain + density)), 2);
 	}
 	
 	public boolean isHolding() {

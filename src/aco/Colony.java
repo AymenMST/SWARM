@@ -14,14 +14,14 @@ import graph.Node;
 
 public class Colony {
 	
-	private int neighborhoodSize = 20;
+	private int neighborhoodSize = 30;
 	int xSpace;
 	int ySpace;
 	List<Ant> ants = new ArrayList<Ant>();
 	Random rand = new Random(11235);
 	double momentum = 1.0;
-	int maxMoveX = 25;	// TODO: change ant position to double
-	int maxMoveY = 25;
+	int maxMoveX = 40;
+	int maxMoveY = 40;
 	double moveX = 0;
 	double moveY = 0;
 	Distance distance = new Euclidean();
