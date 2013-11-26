@@ -19,7 +19,6 @@ public abstract class ClusteringMethod {
 	protected int outIndex;
 	protected List<DataPoint> data;
 	protected boolean visualize = false;
-	protected int startVisualize = -1;
 	protected Forest<Node, Edge> g = new Graph();
 	protected JungHandler jungHandler = new JungHandler();
 
@@ -78,7 +77,11 @@ public abstract class ClusteringMethod {
 	}
 
 	public void setStartVisualize(int startVisualize) {
-		this.startVisualize = startVisualize;
+		jungHandler.setStartVisualize(startVisualize);
+	}
+	
+	public void setVisualizeDirectory(String directory) {
+		jungHandler.saveImagesTo(directory);
 	}
 
 }

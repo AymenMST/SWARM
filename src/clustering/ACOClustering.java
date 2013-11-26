@@ -22,17 +22,12 @@ public class ACOClustering extends ClusteringMethod {
 		super(data);
 		aco = new ACO(data, xSpace, ySpace);
 		jungHandler.setDimensions(xSpace, ySpace);
-		if (visualize)
-			drawGraph();
 	}
 
 	@Override
 	public void cluster() {
-		for (int i = 0; i < 1000000; i++) {
-			if (i == startVisualize) {
-				visualize = true;
-			}
-			if (visualize) {
+		for (int i = 0; i < 500000; i++) {
+			if (visualize && !jungHandler.isSavingImages()) {
 				try {
 					Thread.sleep(200);
 				} catch (InterruptedException e) {	e.printStackTrace();	}
@@ -40,6 +35,9 @@ public class ACOClustering extends ClusteringMethod {
 			aco.runIteration();
 			if (visualize)
 				drawGraph();
+			if (i  > 30) {
+				System.out.println("breakpoint");
+			}
 		}
 	}
 	

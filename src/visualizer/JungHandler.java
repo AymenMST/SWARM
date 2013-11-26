@@ -1,14 +1,15 @@
 package visualizer;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import org.apache.commons.collections15.Transformer;
 
@@ -24,10 +25,15 @@ public class JungHandler {
 
 	private Layout<Node, Edge> layout;
 	private BasicVisualizationServer<Node, Edge> viewer;
+	private BufferedImage image;
 	private JFrame frame = new JFrame("Simple Graph View");
 	private int width = 1000;
 	private int height = 1000;
 	private int padding = 100;
+	private boolean saveImages = false;
+	private String imageFolder;
+	private int imageCount = 1;
+	private int startVisualize = 0;
 
 	public JungHandler() {
 		
@@ -50,13 +56,30 @@ public class JungHandler {
 			layout.setLocation(n, n.getLocation());
 		}
 		
+		frame = new JFrame("Simple Graph View");
 		frame.add(viewer, BorderLayout.CENTER);
 	}
 	
 	public void draw() {
-		frame.setSize(width, height);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		if (imageCount > startVisualize) {
+			frame.setSize(width, height);
+			if (saveImages) {
+				try
+		        {   
+					frame.pack();
+		            image = new BufferedImage(viewer.getWidth(), viewer.getHeight(), BufferedImage.TYPE_INT_RGB);
+		            Graphics2D graphics2D = image.createGraphics();
+		            viewer.print(graphics2D);
+		            graphics2D.dispose();
+		            ImageIO.write(image,"jpeg", new File(imageFolder+"/"+imageCount+".jpg"));
+		        }
+		        catch(Exception exception) { System.out.println("Could not save image"); }
+			} else {
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setVisible(true);
+			}
+		}
+		imageCount++;
 	}
 	
 	/**
@@ -86,6 +109,25 @@ public class JungHandler {
 	public void setDimensions(int width, int height) {
 		this.width = width + padding*2;
 		this.height = height + padding*2;
+	}
+	
+	public void saveImagesTo(String folder) {
+		File directory = new File(folder);
+		if (directory.isDirectory()) {
+			this.imageFolder = directory.getAbsolutePath();
+			this.saveImages = true;
+			frame.setUndecorated(true);
+		} else {
+			throw new IllegalArgumentException("Invalid Image Folder.");
+		}
+	}
+	
+	public boolean isSavingImages() {
+		return saveImages;
+	}
+	
+	public void setStartVisualize(int frame) {
+		this.startVisualize = frame;
 	}
 
 }
