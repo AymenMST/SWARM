@@ -14,17 +14,21 @@ import driver.DataPoint;
 public class ACOClustering extends ClusteringMethod {
 	
 	private ACO aco;
+	private int xSpace = 800;
+	private int ySpace = 800;
+	
 
 	public ACOClustering(List<DataPoint> data) {
 		super(data);
-		aco = new ACO(data);
+		aco = new ACO(data, xSpace, ySpace);
+		jungHandler.setDimensions(xSpace, ySpace);
 		if (visualize)
 			drawGraph();
 	}
 
 	@Override
 	public void cluster() {
-		for (int i = 0; i < 10000; i++) {
+		for (int i = 0; i < 1000000; i++) {
 			if (i == startVisualize) {
 				visualize = true;
 			}

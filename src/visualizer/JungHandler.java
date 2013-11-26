@@ -1,11 +1,14 @@
 package visualizer;
 
-import java.awt.Dimension;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import org.apache.commons.collections15.Transformer;
 
@@ -22,6 +25,9 @@ public class JungHandler {
 	private Layout<Node, Edge> layout;
 	private BasicVisualizationServer<Node, Edge> viewer;
 	private JFrame frame = new JFrame("Simple Graph View");
+	private int width = 1000;
+	private int height = 1000;
+	private int padding = 100;
 
 	public JungHandler() {
 		
@@ -43,14 +49,13 @@ public class JungHandler {
 		for (Node n : forest.getVertices()) {
 			layout.setLocation(n, n.getLocation());
 		}
-
-		frame.add(viewer);
+		
+		frame.add(viewer, BorderLayout.CENTER);
 	}
 	
 	public void draw() {
-		frame.setSize(new Dimension(1000, 1000));
+		frame.setSize(width, height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//frame.pack();
 		frame.setVisible(true);
 	}
 	
@@ -76,6 +81,11 @@ public class JungHandler {
 			newForest.addVertex(node);
 		}
 		return newForest;
+	}
+	
+	public void setDimensions(int width, int height) {
+		this.width = width + padding*2;
+		this.height = height + padding*2;
 	}
 
 }

@@ -24,16 +24,22 @@ public class ACO {
 	Forest<Node, Edge> g = new Graph();
 	Colony colony;
 	
-	int numAnts = 10;
-	int xSpace = 1000;
-	int ySpace = 1000;
+	int numAnts = 25;
+	int xSpace = 500;
+	int ySpace = 500;
 	
-	public ACO(List<DataPoint> data) {
-		this.data = data;
-		initialize();
+	public ACO(List<DataPoint> data, int xSpace, int ySpace) {
+		this.xSpace = xSpace;
+		this.ySpace = ySpace;
+		initialize(data);
 	}
 	
-	public void initialize() {
+	public ACO(List<DataPoint> data) {
+		initialize(data);
+	}
+	
+	public void initialize(List<DataPoint> data) {
+		this.data = data;
 		// place data points
 		for (DataPoint d : data) {
 			int x = rand.nextInt(xSpace);

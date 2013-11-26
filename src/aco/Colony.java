@@ -15,16 +15,16 @@ import graph.Node;
 public class Colony {
 	
 	private int neighborhoodSize = 30;
-	int xSpace;
-	int ySpace;
+	int maxMoveX = 40;
+	int maxMoveY = 40;
+	Distance distance = new Euclidean();
 	List<Ant> ants = new ArrayList<Ant>();
 	Random rand = new Random(11235);
 	double momentum = 1.0;
-	int maxMoveX = 40;
-	int maxMoveY = 40;
+	int xSpace;
+	int ySpace;
 	double moveX = 0;
 	double moveY = 0;
-	Distance distance = new Euclidean();
 	
 	/**
 	 * Creates a colony of ants.
