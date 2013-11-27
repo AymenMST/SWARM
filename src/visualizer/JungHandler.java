@@ -56,7 +56,6 @@ public class JungHandler {
 			layout.setLocation(n, n.getLocation());
 		}
 		
-		frame = new JFrame("Simple Graph View");
 		frame.add(viewer, BorderLayout.CENTER);
 	}
 	
