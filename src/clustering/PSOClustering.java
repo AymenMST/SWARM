@@ -1,12 +1,15 @@
 package clustering;
 
-import graph.Node;
-
 import java.util.List;
 
+import pso.PSO;
 import driver.DataPoint;
 
 public class PSOClustering extends ClusteringMethod {
+	
+	PSO pso;
+	int swarmSize = 3;
+	int clusters = 2;
 
 	public PSOClustering(List<DataPoint> data) {
 		super(data);
@@ -14,13 +17,14 @@ public class PSOClustering extends ClusteringMethod {
 
 	@Override
 	public void cluster() {
-		// TODO Auto-generated method stub
-
+		int particleSize = clusters * data.get(0).getFeatures().size();
+		pso = new PSO(swarmSize, particleSize);
 	}
 
 	@Override
 	public List<List<Double>> getCenters() {
-		// TODO Auto-generated method stub
+		
+		
 		return null;
 	}
 

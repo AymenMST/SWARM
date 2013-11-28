@@ -9,6 +9,7 @@ import java.util.List;
 
 import clustering.ClusteringMethod;
 import clustering.KMeansClustering;
+import clustering.PSOClustering;
 
 /**
  * Main driver used to test various classifier training algorithms.
@@ -55,6 +56,10 @@ public class Simulator {
 //		cluster.setVisualize(true);
 //		//cluster.setStartVisualize(500);
 //		cluster.run();
+		
+		// Test PSO
+		cluster = new PSOClustering(data);
+		cluster.run();
 		
 		
 	}
