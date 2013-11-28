@@ -31,6 +31,10 @@ public class Node {
 	public void setDataPoint(DataPoint dataPoint) {
 		this.dataPoint = dataPoint;
 	}
+	
+	public List<Double> getFeatureLocation() {
+		return this.dataPoint.getFeatures();
+	}
 
 	public Point2D.Double getLocation() {
 		return location;

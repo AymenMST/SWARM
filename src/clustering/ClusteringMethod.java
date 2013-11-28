@@ -6,6 +6,8 @@ import visualizer.JungHandler;
 
 import driver.DataPoint;
 import edu.uci.ics.jung.graph.Forest;
+import fitness.DaviesBouldinGraphFitness;
+import fitness.Fitness;
 import graph.Edge;
 import graph.Graph;
 import graph.Node;
@@ -21,6 +23,8 @@ public abstract class ClusteringMethod {
 	protected boolean visualize = false;
 	protected Forest<Node, Edge> g = new Graph();
 	protected JungHandler jungHandler = new JungHandler();
+	protected List<List<Node>> clusters;
+	Fitness fitness;
 
 	/**
 	 * Constructs a generic TrainingMethod class.
@@ -50,7 +54,8 @@ public abstract class ClusteringMethod {
 		elapsedTime = System.currentTimeMillis() - startTime;
 
 		// TODO
-		double performance = 0;
+		fitness = new DaviesBouldinGraphFitness(clusters);
+		double performance = fitness.getFitness();
 
 		System.out.println();
 		System.out.println(performance + "\t" + elapsedTime);
@@ -82,6 +87,10 @@ public abstract class ClusteringMethod {
 	
 	public void setVisualizeDirectory(String directory) {
 		jungHandler.saveImagesTo(directory);
+	}
+	
+	public List<List<Node>> getClusters() {
+		return clusters;
 	}
 
 }

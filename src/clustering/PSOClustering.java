@@ -1,5 +1,7 @@
 package clustering;
 
+import graph.Node;
+
 import java.util.List;
 
 import driver.DataPoint;

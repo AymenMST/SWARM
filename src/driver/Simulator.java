@@ -1,11 +1,12 @@
 package driver;
 
+import fitness.DaviesBouldinGraphFitness;
+import fitness.Fitness;
 import inputter.Inputter;
 import inputter.InputterBanknote;
 
 import java.util.List;
 
-import clustering.ACOClustering;
 import clustering.ClusteringMethod;
 import clustering.KMeansClustering;
 
@@ -16,7 +17,7 @@ public class Simulator {
 
 	public static void main(String[] args) {
 
-		int maxDataSetSize = 1000;
+		int maxDataSetSize = 500;
 
 		// get input data
 		Inputter inputter;
@@ -45,15 +46,16 @@ public class Simulator {
 		ClusteringMethod cluster;
 
 		// Test K Means
-//		cluster = new KMeansClustering(data);
+		cluster = new KMeansClustering(data);
 //		cluster.setVisualize(true);
-//		cluster.run();
+		cluster.run();
 		
 		// Test ACO
-		cluster = new ACOClustering(data);
-		cluster.setVisualize(true);
-		//cluster.setStartVisualize(500);
-		cluster.run();
+//		cluster = new ACOClustering(data);
+//		cluster.setVisualize(true);
+//		//cluster.setStartVisualize(500);
+//		cluster.run();
+		
 		
 	}
 

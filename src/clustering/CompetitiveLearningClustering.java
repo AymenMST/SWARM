@@ -20,6 +20,6 @@ public class CompetitiveLearningClustering extends ClusteringMethod {
 	public List<List<Double>> getCenters() {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}	
 
 }
