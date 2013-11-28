@@ -3,10 +3,9 @@ package clustering;
 import java.util.List;
 
 import visualizer.JungHandler;
-
 import driver.DataPoint;
 import edu.uci.ics.jung.graph.Forest;
-import fitness.DaviesBouldinGraphFitness;
+import fitness.DunnGraphFitness;
 import fitness.Fitness;
 import graph.Edge;
 import graph.Graph;
@@ -53,9 +52,7 @@ public abstract class ClusteringMethod {
 		cluster();
 		elapsedTime = System.currentTimeMillis() - startTime;
 
-		// TODO
-		fitness = new DaviesBouldinGraphFitness(clusters);
-		double performance = fitness.getFitness();
+		double performance = evaluate();
 
 		System.out.println();
 		System.out.println(performance + "\t" + elapsedTime);
@@ -70,9 +67,9 @@ public abstract class ClusteringMethod {
 
 
 	public double evaluate() {
-		//TODO
-		double performance = 0;
-		return performance;
+		//fitness = new DaviesBouldinGraphFitness(clusters);
+		fitness = new DunnGraphFitness(clusters);
+		return fitness.getFitness();
 	}
 	
 	public abstract List<List<Double>> getCenters();
