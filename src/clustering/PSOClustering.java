@@ -22,8 +22,8 @@ public class PSOClustering extends ClusteringMethod {
 		
 		int i = 0;
 		do {
-			System.out.println("Iteration "+i);
-			pso.runIteration();
+			double fitness = pso.runIteration();
+			System.out.println("FITNESS: "+fitness);
 			i++;
 		} while (i < 10);
 		
