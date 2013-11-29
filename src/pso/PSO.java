@@ -2,14 +2,14 @@ package pso;
 
 import java.util.List;
 
-import fitness.Fitness;
+import driver.DataPoint;
 
 public class PSO {
 	
 	Swarm swarm;
 	
-	public PSO(int swarmSize, int particleSize) {
-		swarm = new Swarm(swarmSize, particleSize);
+	public PSO(int swarmSize, List<DataPoint> data, int numClusters) {
+		swarm = new Swarm(swarmSize, data, numClusters);
 	}
 	
 	public void runIteration() {
@@ -18,6 +18,14 @@ public class PSO {
 	
 	public List<Double> getBestSolution() {
 		return swarm.getBestParticle().getRepresentation();
+	}
+	
+	public List<Double> getBestFeatures() {
+		return swarm.getBestParticle().getRepresentation();
+	}
+	
+	public double getBestFitness() {
+		return swarm.getBestParticle().getFitness();
 	}
 
 }

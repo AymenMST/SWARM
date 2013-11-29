@@ -13,7 +13,7 @@ public abstract class GraphFitness extends Fitness {
 	Distance distance = new Euclidean();
 	List<List<Node>> clusters;
 	List<Double> avgDistances;
-	List<List<Double>> centers;
+	List<List<Double>> centers = null;
 	
 	public GraphFitness(List<List<Node>> clusters) {
 		this.clusters = clusters;
@@ -23,28 +23,40 @@ public abstract class GraphFitness extends Fitness {
 	
 	protected void calculateCentersAndAverageDistances() {
 		// calculate centers and average distances
-		avgDistances = new ArrayList<Double>(clusters.size());
-		centers = new ArrayList<>(clusters.size());
-		for (List<Node> cluster : clusters) {
+		if (centers == null) {
 			// get center
-			List<Double> center = new ArrayList<>();
-			for (int nodeIndex = 0; nodeIndex < cluster.size(); nodeIndex++) {
-				Node node = cluster.get(nodeIndex);
-				for (int i = 0; i < node.getFeatureLocation().size(); i++) {
-					double newValue = node.getFeatureLocation().get(i);
-					if (nodeIndex == 0)
-						center.add(newValue);
-					else
-						center.set(i, center.get(i) + newValue);
+			centers = new ArrayList<>(clusters.size());
+			for (int clusterIndex = 0; clusterIndex < clusters.size(); clusterIndex++) {
+					
+				List<Node> cluster = clusters.get(clusterIndex);
+				
+				
+				
+				
+				List<Double> center = new ArrayList<>();
+				for (int nodeIndex = 0; nodeIndex < cluster.size(); nodeIndex++) {
+					Node node = cluster.get(nodeIndex);
+					for (int i = 0; i < node.getFeatureLocation().size(); i++) {
+						double newValue = node.getFeatureLocation().get(i);
+						if (nodeIndex == 0)
+							center.add(newValue);
+						else
+							center.set(i, center.get(i) + newValue);
+					}
 				}
-			}
-			for (int i = 0; i < center.size(); i++)
-				center.set(i, center.get(i) / cluster.size());
+				for (int i = 0; i < center.size(); i++)
+					center.set(i, center.get(i) / cluster.size());
 			
-			centers.add(center);
-			// get average distance
-			avgDistances.add(getAverageClusterDistance(cluster, center));
+				centers.add(center);
+			}
 		}
+		
+		avgDistances = new ArrayList<Double>(clusters.size());
+		for (int clusterIndex = 0; clusterIndex < clusters.size(); clusterIndex++) {
+			List<Node> cluster = clusters.get(clusterIndex);
+			avgDistances.add(getAverageClusterDistance(cluster, centers.get(clusterIndex)));
+		}
+		
 	}
 	
 	private double getAverageClusterDistance(List<Node> cluster, List<Double> center) {
@@ -54,6 +66,10 @@ public abstract class GraphFitness extends Fitness {
 		}
 		avgDistance /= cluster.size();
 		return avgDistance;
+	}
+	
+	public void setCenters(List<List<Double>> centers) {
+		this.centers = centers;
 	}
 
 }

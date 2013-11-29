@@ -11,7 +11,8 @@ public class Particle {
 	List<Double> representation;
 	Random random = new Random(11235);
 	double minInitValue = 0;
-	double maxInitValue = 0;
+	double maxInitValue = 10;
+	double fitness;
 	double bestFitness = Double.MAX_VALUE;
 	List<Double> bestRepresentation;
 	
@@ -35,10 +36,19 @@ public class Particle {
 	}
 	
 	public void setFitness(double fitness) {
+		this.fitness = fitness;
 		if (fitness < bestFitness) {
 			bestFitness = fitness;
 			bestRepresentation = representation;
 		}
+	}
+	
+	public double getFitness() {
+		return fitness;
+	}
+	
+	public int size() {
+		return representation.size();
 	}
 	
 	public String toString() {

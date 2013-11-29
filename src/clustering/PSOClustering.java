@@ -4,12 +4,13 @@ import java.util.List;
 
 import pso.PSO;
 import driver.DataPoint;
+import fitness.DunnGraphFitness;
 
 public class PSOClustering extends ClusteringMethod {
 	
 	PSO pso;
 	int swarmSize = 3;
-	int clusters = 2;
+	int numClusters = 2;
 
 	public PSOClustering(List<DataPoint> data) {
 		super(data);
@@ -17,8 +18,15 @@ public class PSOClustering extends ClusteringMethod {
 
 	@Override
 	public void cluster() {
-		int particleSize = clusters * data.get(0).getFeatures().size();
-		pso = new PSO(swarmSize, particleSize);
+		pso = new PSO(swarmSize, data, numClusters);
+		
+		int i = 0;
+		do {
+			System.out.println("Iteration "+i);
+			pso.runIteration();
+			i++;
+		} while (i < 10);
+		
 	}
 
 	@Override
@@ -26,6 +34,11 @@ public class PSOClustering extends ClusteringMethod {
 		
 		
 		return null;
+	}
+	
+	@Override
+	public double evaluate() {
+		return pso.getBestFitness();
 	}
 
 }

@@ -47,9 +47,9 @@ public class Simulator {
 		ClusteringMethod cluster;
 
 		// Test K Means
-		cluster = new KMeansClustering(data);
-//		cluster.setVisualize(true);
-		cluster.run();
+//		cluster = new KMeansClustering(data);
+////		cluster.setVisualize(true);
+//		cluster.run();
 		
 		// Test ACO
 //		cluster = new ACOClustering(data);

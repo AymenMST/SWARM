@@ -1,5 +1,6 @@
 package clustering;
 
+import fitness.DunnGraphFitness;
 import graph.Graph;
 import graph.Node;
 
@@ -76,7 +77,7 @@ public class KMeansClustering extends ClusteringMethod {
 		}
 		
 		for (List<Double> center : centers){
-			System.out.println(center);
+			//System.out.println(center);
 		}
 
 	}
@@ -172,7 +173,7 @@ public class KMeansClustering extends ClusteringMethod {
 		return centers;
 	}
 	
-public void drawGraph() {
+	public void drawGraph() {
 		
 		g = new Graph();
 		
