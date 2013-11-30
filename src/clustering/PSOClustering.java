@@ -4,28 +4,31 @@ import java.util.List;
 
 import pso.PSO;
 import driver.DataPoint;
-import fitness.DunnGraphFitness;
+import fitness.GraphFitness;
 
 public class PSOClustering extends ClusteringMethod {
 	
 	PSO pso;
 	int swarmSize = 3;
 	int numClusters = 2;
-
-	public PSOClustering(List<DataPoint> data) {
-		super(data);
+	
+	public PSOClustering(List<DataPoint> data, GraphFitness fitnessEvaluation) {
+		super(data, fitnessEvaluation);
 	}
 
 	@Override
 	public void cluster() {
-		pso = new PSO(swarmSize, data, numClusters);
+		pso = new PSO(swarmSize, data, numClusters, fitnessEvaluation);
 		
 		int i = 0;
 		do {
 			double fitness = pso.runIteration();
-			System.out.println("FITNESS: "+fitness);
+			String fitnessDisplay = String.valueOf(fitness);
+			if (fitness > 10000000)
+				fitnessDisplay = "infinity";
+			System.out.println("FITNESS: "+fitnessDisplay);
 			i++;
-		} while (i < 10);
+		} while (i < 100);
 		
 	}
 

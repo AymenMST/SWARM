@@ -2,20 +2,18 @@ package fitness;
 
 import graph.Node;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import distance.Distance;
-import distance.Euclidean;
 
 public class DunnGraphFitness extends GraphFitness {
 	
-	public DunnGraphFitness(List<List<Node>> clusters) {
-		super(clusters);
+	public DunnGraphFitness() {
+		
 	}
 	
 	// higher values are better
-	public double getFitness() {
+	public double getFitness(List<List<Node>> clusters) {
+		
+		this.clusters = clusters;
 		double fitness = Double.MAX_VALUE;
 		
 		calculateCentersAndAverageDistances();

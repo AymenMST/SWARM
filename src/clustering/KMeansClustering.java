@@ -1,6 +1,6 @@
 package clustering;
 
-import fitness.DunnGraphFitness;
+import fitness.GraphFitness;
 import graph.Graph;
 import graph.Node;
 
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import visualizer.JungHandler;
+import tools.Tools;
 
 import distance.Distance;
 import distance.Euclidean;
@@ -20,6 +20,7 @@ import driver.DataPoint;
 
 public class KMeansClustering extends ClusteringMethod {
 
+	private Graph graph;
 	// the number of clusters, or means
 	private int k = 0;
 	private int numFeatures = 0;
@@ -33,12 +34,14 @@ public class KMeansClustering extends ClusteringMethod {
 	private List<List<Double>> centers;
 	// the map that keeps track of which center datapoints are assigned to
 	private Map<DataPoint, Integer> clustersMap = new HashMap<DataPoint, Integer>();
+	// whether or not to use the datapoints' virtual locations
+	private boolean useVirtualLocations = false;
 
 	private Random random = new Random(11235);
 	private Distance dist = new Euclidean();
 
-	public KMeansClustering(List<DataPoint> data) {
-		super(data);
+	public KMeansClustering(List<DataPoint> data, GraphFitness fitnessEvaluation) {
+		super(data, fitnessEvaluation);
 	}
 
 	/**
@@ -46,10 +49,27 @@ public class KMeansClustering extends ClusteringMethod {
 	 *            The training data that will be used to identify clusters
 	 */
 	public void cluster() {
+		
 		// set k to the number of potential classes
 		k = data.get(0).getOutputs().size();
-		// get the size of the input space
-		numFeatures = data.get(0).getFeatures().size();
+		// the size of the input space
+		numFeatures = 0;
+		for (Node node : graph.getVertices()) {
+			DataPoint datapoint = node.getDataPoint();
+			if (useVirtualLocations)
+				numFeatures = node.getLocationVector().size();
+			else
+				numFeatures = datapoint.getFeatures().size();
+			break;
+		}
+		
+		// build graph from datapoints if not set
+		if (graph == null) {
+			this.graph = new Graph();
+			for (DataPoint point : data) {
+				graph.addVertex(new Node(point));
+			}
+		}
 
 		// set up the new list of centers
 		initializeCenters();
@@ -59,7 +79,7 @@ public class KMeansClustering extends ClusteringMethod {
 
 		double change;
 		do {
-			change = trainIteration(data);
+			change = trainIteration();
 			//System.out.print(String.format("%20s  : ",String.valueOf(change)));
 			//System.out.println(centers.get(0));
 			if (visualize)
@@ -71,23 +91,23 @@ public class KMeansClustering extends ClusteringMethod {
 		for (int i = 0; i < k; i++) {
 			clusters.add(new ArrayList<Node>());
 		}
-		for (DataPoint point : data) {
-			Node node = new Node(point);
-			clusters.get(clustersMap.get(point)).add(node);
-		}
-		
-		for (List<Double> center : centers){
-			//System.out.println(center);
+		for (Node node : graph.getVertices()) {
+			DataPoint datapoint = node.getDataPoint();
+			clusters.get(clustersMap.get(datapoint)).add(node);
 		}
 
 	}
 
-	public int classify(DataPoint datapoint) {
+	public int assignCluster(Node node) {
+		DataPoint datapoint = node.getDataPoint();
 		double minDistance = Double.MAX_VALUE;
 		int closestCenter = 0;
 		for (int center = 0; center < k; center++) {
-			double distance = dist.distance(datapoint.getFeatures(),
-					centers.get(center));
+			double distance = 0.0;
+			if (useVirtualLocations)
+				distance = dist.distance(node.getLocationVector(), centers.get(center));
+			else
+				distance = dist.distance(datapoint.getFeatures(), centers.get(center));
 			if (distance < minDistance) {
 				minDistance = distance;
 				closestCenter = center;
@@ -96,17 +116,18 @@ public class KMeansClustering extends ClusteringMethod {
 		return closestCenter;
 	}
 
-	public double trainIteration(List<DataPoint> data) {
+	public double trainIteration() {
 		double change = 0.0;
-		for (DataPoint datapoint : data) {
-			int closestCenter = classify(datapoint);
+		for (Node node : graph.getVertices()) {
+			DataPoint datapoint = node.getDataPoint();
+			int closestCenter = assignCluster(node);
 			clustersMap.put(datapoint, closestCenter);
 		}
-		change = calculateCenters(data);
+		change = calculateCenters();
 		return change;
 	}
 
-	private double calculateCenters(List<DataPoint> data) {
+	private double calculateCenters() {
 		double change = 0.0;
 		// create points structure
 		List<List<List<Double>>> points = new ArrayList<>(k);
@@ -115,13 +136,17 @@ public class KMeansClustering extends ClusteringMethod {
 			points.add(clust);
 		}
 		// add datapoints to points structure using clusters
-		for (DataPoint datapoint : data) {
+		for (Node node : graph.getVertices()) {
+			DataPoint datapoint = node.getDataPoint();
 			// find the cluster index this point belongs to
 			int cluster = clustersMap.get(datapoint);
 			// get existing cluster
 			List<List<Double>> updated = points.get(cluster);
 			// add datapoint to cluster
-			updated.add(datapoint.getFeatures());
+			if (useVirtualLocations)
+				updated.add(node.getLocationVector());
+			else
+				updated.add(datapoint.getFeatures());
 			// update the cluster to use the new cluster
 			points.set(cluster, updated);
 		}
@@ -157,8 +182,7 @@ public class KMeansClustering extends ClusteringMethod {
 		for (int center = 0; center < k; center++) {
 			ArrayList<Double> newCenter = new ArrayList<Double>(numFeatures);
 			for (int feature = 0; feature < numFeatures; feature++) {
-				newCenter.add(initCenterMin + (initCenterMax - initCenterMin)
-						* random.nextDouble());
+				newCenter.add(Tools.getRandomDouble(initCenterMin, initCenterMax));
 			}
 			centers.add(newCenter);
 		}
@@ -181,7 +205,8 @@ public class KMeansClustering extends ClusteringMethod {
 		int dim2 = 2;
 		
 		// add data points
-		for (DataPoint d : data) {
+		for (Node node : graph.getVertices()) {
+			DataPoint d = node.getDataPoint();
 			double point1 = d.getFeatures().get(dim1);
 			double point2 = d.getFeatures().get(dim2);
 			Node vertex = new Node(d, new Point2D.Double((point1 + 20) * 20, (point2 + 20) * 20));
@@ -207,6 +232,15 @@ public class KMeansClustering extends ClusteringMethod {
 		jungHandler.setGraph(g);
 		jungHandler.draw();
 		
+	}
+	
+	public void setPseudoGraph(Graph graph) {
+		this.graph = graph;
+		this.useVirtualLocations = true;
+	}
+	
+	public void setUseVirtualLocations(boolean useVirtualLocations) {
+		this.useVirtualLocations = useVirtualLocations;
 	}
 
 	/**

@@ -7,7 +7,6 @@ import graph.HeuristicConstant;
 import graph.Node;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -19,9 +18,8 @@ public class ACO {
 	static Heuristic heuristic = new HeuristicConstant();
 	static double pheromoneInfluence = 1.0;
 	static double attractivenessInfluence = 1.0;
-	private List<DataPoint> data;
 	Random rand = new Random(11235);
-	Forest<Node, Edge> g = new Graph();
+	Graph g = new Graph();
 	Colony colony;
 	
 	int numAnts = 25;
@@ -39,7 +37,6 @@ public class ACO {
 	}
 	
 	public void initialize(List<DataPoint> data) {
-		this.data = data;
 		// place data points
 		for (DataPoint d : data) {
 			int x = rand.nextInt(xSpace);
@@ -62,7 +59,7 @@ public class ACO {
 		return colony.getAnts();
 	}
 	
-	public Forest<Node, Edge> getGraph() {
+	public Graph getGraph() {
 		return g;
 	}
 

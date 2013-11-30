@@ -10,4 +10,10 @@ public class Tools {
 		return minValue + (maxValue - minValue) * random.nextDouble();
 	}
 	
+	public static double round(double value, int decimals) {
+		int pow = (int) Math.pow(10, decimals);
+		double val = Math.round(value * pow);
+		return (double) Math.round(val) / pow;
+	}
+	
 }

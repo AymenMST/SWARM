@@ -9,6 +9,7 @@ import edu.uci.ics.jung.graph.DelegateForest;
 
 public class Graph extends DelegateForest<Node, Edge> {
 	
+	private static final long serialVersionUID = 1L;
 	Distance dist = new Euclidean();
 
 	public List<List<Node>> getClusters(List<List<Double>> centers) {

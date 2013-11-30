@@ -2,20 +2,18 @@ package fitness;
 
 import graph.Node;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import distance.Distance;
-import distance.Euclidean;
 
 public class DaviesBouldinGraphFitness extends GraphFitness {
 	
-	public DaviesBouldinGraphFitness(List<List<Node>> clusters) {
-		super(clusters);
+	public DaviesBouldinGraphFitness() {
+		
 	}
 	
 	// smaller values are better
-	public double getFitness() {
+	public double getFitness(List<List<Node>> clusters) {
+		
+		this.clusters = clusters;
 		double fitness = 0.0;
 		
 		calculateCentersAndAverageDistances();
@@ -31,6 +29,9 @@ public class DaviesBouldinGraphFitness extends GraphFitness {
 			fitness += maxValue;
 		}
 		fitness /= clusters.size();
+		
+		// inverse to make larger values better
+		fitness = 1.0 / fitness;
 		
 		return fitness;
 	}

@@ -56,6 +56,7 @@ public class InputterPenDigits extends Inputter {
 
 	}
 
+	@SuppressWarnings("serial")
 	@Override
 	public void findClasses() {
 		possibleClasses = new ArrayList<String>() {{

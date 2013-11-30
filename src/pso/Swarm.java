@@ -1,23 +1,19 @@
 package pso;
 
-import fitness.DunnGraphFitness;
-import fitness.GraphFitness;
-import graph.Graph;
-import graph.Node;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import driver.DataPoint;
+import graph.Graph;
+import graph.Node;
 
 public class Swarm {
 	
 	List<Particle> particles;
-	GraphFitness fitness;
 	List<List<Node>> clusters;
 	Graph g = new Graph();
 	int numClusters;
-	double globalBestFitness = Double.MAX_VALUE;
+	double globalBestFitness = -Double.MAX_VALUE;
 	protected static List<Double> globalBest;
 	double minValue = Double.MAX_VALUE;
 	double maxValue = -Double.MAX_VALUE;
@@ -63,7 +59,7 @@ public class Swarm {
 	}
 	
 	public double evaluateParticles() {
-		double bestFitness = Double.MAX_VALUE;
+		double bestFitness = -Double.MAX_VALUE;
 		Particle bestParticle = particles.get(0);
 		for (Particle particle : particles) {
 			
@@ -79,18 +75,17 @@ public class Swarm {
 			}
 			
 			clusters = g.getClusters(centers);
-			//fitness = new DaviesBouldinGraphFitness(clusters);
-			fitness = new DunnGraphFitness(clusters);
-			fitness.setCenters(centers);
-			particle.setFitness(fitness.getFitness());
-			if (fitness.getFitness() < bestFitness) {
-				bestFitness = fitness.getFitness();
+			PSO.fitness.setCenters(centers);
+			double fitnessValue = PSO.fitness.getFitness(clusters);
+			particle.setFitness(fitnessValue);
+			if (fitnessValue > bestFitness) {
+				bestFitness = fitnessValue;
 				bestParticle = particle;
 			}
 		}
 		
 		// update global best if changed
-		if (bestFitness < globalBestFitness) {
+		if (bestFitness > globalBestFitness) {
 			globalBestFitness = bestFitness;
 			globalBest = bestParticle.getLocation();
 		}

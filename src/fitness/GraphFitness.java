@@ -8,18 +8,18 @@ import java.util.List;
 import distance.Distance;
 import distance.Euclidean;
 
-public abstract class GraphFitness extends Fitness {
+public abstract class GraphFitness {
 	
 	Distance distance = new Euclidean();
 	List<List<Node>> clusters;
 	List<Double> avgDistances;
 	List<List<Double>> centers = null;
 	
-	public GraphFitness(List<List<Node>> clusters) {
-		this.clusters = clusters;
+	public GraphFitness() {
+		
 	}
 	
-	public abstract double getFitness();
+	public abstract double getFitness(List<List<Node>> clusters);
 	
 	protected void calculateCentersAndAverageDistances() {
 		// calculate centers and average distances

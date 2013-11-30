@@ -3,6 +3,7 @@ package pso;
 import java.util.List;
 
 import driver.DataPoint;
+import fitness.GraphFitness;
 
 public class PSO {
 	
@@ -10,8 +11,11 @@ public class PSO {
 	protected static double momentum = 0.5;
 	protected static double cognitiveDistribution = 2;			// phi_1
 	protected static double socialDistribution = 2;				// phi_2
+	protected static GraphFitness fitness;
 	
-	public PSO(int swarmSize, List<DataPoint> data, int numClusters) {
+	@SuppressWarnings("static-access")
+	public PSO(int swarmSize, List<DataPoint> data, int numClusters, GraphFitness fitnessEvaluation) {
+		this.fitness = fitnessEvaluation;
 		swarm = new Swarm(swarmSize, data, numClusters);
 		swarm.evaluateParticles();
 	}

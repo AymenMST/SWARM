@@ -73,7 +73,6 @@ public class Node {
 		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (alpha * 255));
 	}
 	
-	@SuppressWarnings("static-access")
 	public double getAlpha() {
 		return (double)Math.round(((double)color.getAlpha()/255) * 100) / 100;
 	}

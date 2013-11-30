@@ -5,8 +5,7 @@ import java.util.List;
 import visualizer.JungHandler;
 import driver.DataPoint;
 import edu.uci.ics.jung.graph.Forest;
-import fitness.DunnGraphFitness;
-import fitness.Fitness;
+import fitness.GraphFitness;
 import graph.Edge;
 import graph.Graph;
 import graph.Node;
@@ -20,10 +19,10 @@ public abstract class ClusteringMethod {
 	protected int outIndex;
 	protected List<DataPoint> data;
 	protected boolean visualize = false;
-	protected Forest<Node, Edge> g = new Graph();
+	protected Graph g = new Graph();
 	protected JungHandler jungHandler = new JungHandler();
 	protected List<List<Node>> clusters;
-	Fitness fitness;
+	GraphFitness fitnessEvaluation;
 
 	/**
 	 * Constructs a generic TrainingMethod class.
@@ -33,8 +32,9 @@ public abstract class ClusteringMethod {
 	 * @param data
 	 *            The data that will be used to train the network.
 	 */
-	public ClusteringMethod(List<DataPoint> data) {
+	public ClusteringMethod(List<DataPoint> data, GraphFitness fitnessEvaluation) {
 		this.data = data;
+		this.fitnessEvaluation = fitnessEvaluation;
 	}
 
 	/**
@@ -67,9 +67,7 @@ public abstract class ClusteringMethod {
 
 
 	public double evaluate() {
-		//fitness = new DaviesBouldinGraphFitness(clusters);
-		fitness = new DunnGraphFitness(clusters);
-		return fitness.getFitness();
+		return fitnessEvaluation.getFitness(clusters);
 	}
 	
 	public abstract List<List<Double>> getCenters();
