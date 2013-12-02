@@ -1,5 +1,7 @@
 package driver;
 
+import fitness.DaviesBouldinGraphFitness;
+import fitness.GraphFitness;
 import inputter.Inputter;
 import inputter.InputterBanknote;
 
@@ -7,8 +9,6 @@ import java.util.List;
 
 import clustering.ACOClustering;
 import clustering.ClusteringMethod;
-import fitness.DaviesBouldinGraphFitness;
-import fitness.GraphFitness;
 
 /**
  * Main driver used to test various classifier training algorithms.
@@ -18,8 +18,9 @@ public class Simulator {
 	public static void main(String[] args) {
 
 		int maxDataSetSize = 500;
-//		GraphFitness fitnessEvaluation = new DunnGraphFitness();
-		GraphFitness fitnessEvaluation = new DaviesBouldinGraphFitness();
+		int numPrinpleComponenets = 2;
+
+        GraphFitness fitnessEvaluation = new DaviesBouldinGraphFitness();
 
 		// get input data
 		Inputter inputter;
@@ -42,25 +43,32 @@ public class Simulator {
 		inputter.parseFile();
 		inputter.truncate(maxDataSetSize);
 		List<DataPoint> data = inputter.getData();
-
 		
+		PCA pca = new PCA(numPrinpleComponenets);
+
+		pca.runPCA(data);
 
 		ClusteringMethod cluster;
 
 		// Test K Means
-//		cluster = new KMeansClustering(data, fitnessEvaluation);
+//		cluster = new KMeansClustering(data);
 ////		cluster.setVisualize(true);
 //		cluster.run();
 		
 		// Test ACO
 		cluster = new ACOClustering(data, fitnessEvaluation);
-		//cluster.setVisualize(true);
-		//cluster.setStartVisualize(500);
-		cluster.run();
+		cluster.setVisualize(true);
+		//cluster.setStartVisualize(0);
+		//cluster.setVisualizeDirectory("graphs/acotest");
+
+//		cluster = new ACOClustering(data);
+//		cluster.setVisualize(true);
+//		//cluster.setStartVisualize(500);
+//		cluster.run();
 		
 		// Test PSO
-//		cluster = new PSOClustering(data, fitnessEvaluation);
-//		cluster.run();
+		//cluster = new PSOClustering(data);
+		cluster.run();
 		
 		
 	}
