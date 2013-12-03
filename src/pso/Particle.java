@@ -37,8 +37,9 @@ public class Particle {
 	}
 	
 	public void move() {
-		for (int i = 0; i < location.size(); i++)
+		for (int i = 0; i < location.size(); i++) {
 			location.set(i, location.get(i) + velocity.get(i));
+		}
 	}
 	
 	public List<Double> getPersonalBest() {

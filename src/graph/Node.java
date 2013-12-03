@@ -13,6 +13,7 @@ public class Node {
 	private Point2D.Double location;
 	private Color color = Color.BLUE;
 	private int layer = 0;
+	private double error = 0;
 
 	public Node(DataPoint dataPoint) {
 		this.dataPoint = dataPoint;
@@ -75,6 +76,14 @@ public class Node {
 	
 	public double getAlpha() {
 		return (double)Math.round(((double)color.getAlpha()/255) * 100) / 100;
+	}
+	
+	public void setError(double error) {
+		this.error = error;
+	}
+	
+	public double getError() {
+		return error;
 	}
 
 }

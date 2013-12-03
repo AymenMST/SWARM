@@ -62,7 +62,7 @@ public class ACOClustering extends ClusteringMethod {
 		
 		// add ants
 		for (Ant ant : aco.getAnts()) {
-			Node node = new Node(null, ant.getLocation());
+			Node node = ant.toNode();
 			
 			node.setColor(ant.getColor());
 			node.setLayer(1);

@@ -5,10 +5,8 @@ import inputter.InputterBanknote;
 
 import java.util.List;
 
-import clustering.ACOClustering;
-import clustering.ClusteringMethod;
-import fitness.DaviesBouldinGraphFitness;
-import fitness.GraphFitness;
+import clustering.*;
+import fitness.*;
 
 /**
  * Main driver used to test various classifier training algorithms.
@@ -43,8 +41,6 @@ public class Simulator {
 		inputter.truncate(maxDataSetSize);
 		List<DataPoint> data = inputter.getData();
 
-		
-
 		ClusteringMethod cluster;
 
 		// Test K Means
@@ -53,14 +49,14 @@ public class Simulator {
 //		cluster.run();
 		
 		// Test ACO
-		cluster = new ACOClustering(data, fitnessEvaluation);
-		//cluster.setVisualize(true);
-		//cluster.setStartVisualize(500);
-		cluster.run();
+//		cluster = new ACOClustering(data, fitnessEvaluation);
+//		//cluster.setVisualize(true);
+//		//cluster.setStartVisualize(500);
+//		cluster.run();
 		
 		// Test PSO
-//		cluster = new PSOClustering(data, fitnessEvaluation);
-//		cluster.run();
+		cluster = new PSOClustering(data, fitnessEvaluation);
+		cluster.run();
 		
 		
 	}
