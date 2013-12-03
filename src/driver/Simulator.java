@@ -48,6 +48,9 @@ public class Simulator {
 ////		cluster.setVisualize(true);
 //		cluster.run();
 		
+		cluster = new CompetitiveLearningClustering(data, fitnessEvaluation);
+		//cluster.run();
+		
 		// Test ACO
 //		cluster = new ACOClustering(data, fitnessEvaluation);
 //		cluster.setVisualize(true);
@@ -55,8 +58,8 @@ public class Simulator {
 //		cluster.run();
 		
 		// Test PSO
-		cluster = new PSOClustering(data, fitnessEvaluation);
-		cluster.run();
+//		cluster = new PSOClustering(data, fitnessEvaluation);
+//		cluster.run();
 		
 	}
 
