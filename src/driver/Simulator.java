@@ -40,16 +40,19 @@ public class Simulator {
 		inputter.parseFile();
 		inputter.truncate(maxDataSetSize);
 		List<DataPoint> data = inputter.getData();
+		
+		PCA pca = new PCA(2);
+		data = pca.runPCA(data);
 
 		ClusteringMethod cluster;
 
 		// Test K Means
-//		cluster = new KMeansClustering(data, fitnessEvaluation);
-////		cluster.setVisualize(true);
-//		cluster.run();
-		
-		cluster = new CompetitiveLearningClustering(data, fitnessEvaluation);
+		cluster = new KMeansClustering(data, fitnessEvaluation);
+		//cluster.setVisualize(true);
 		cluster.run();
+		
+//		cluster = new CompetitiveLearningClustering(data, fitnessEvaluation);
+//		cluster.run();
 		
 		// Test ACO
 //		cluster = new ACOClustering(data, fitnessEvaluation);

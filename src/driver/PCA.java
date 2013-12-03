@@ -11,25 +11,69 @@ import cern.colt.matrix.linalg.EigenvalueDecomposition;
 public class PCA {
 	private int numPrincipleComponents;
 	private List<DataPoint> data;
+	private List<DataPoint> transformedData;
 	private List<Double> featureMeans;
 
 	private DoubleMatrix2D covarianceMatrix;
 	private EigenvalueDecomposition eigenValueDecomp;
 	private DoubleMatrix2D principleMatrix;
+	private DoubleMatrix2D transformationMatrix;
 
 	public PCA(int numPrincipleComponents) {
 		this.numPrincipleComponents = numPrincipleComponents;
 	}
 
-	public void runPCA(List<DataPoint> data) {
+	public List<DataPoint> runPCA(List<DataPoint> data) {
 		this.data = data;
 		centerAtZero();
 		calculateCovarianceMatrix();
 		calculateEigenVectors();
 		findPrincipleComponents();
+		constructTransformationMatrix();
+		transformData();
+		return transformedData;
+	}
+	
+	private void transformData() {
+		transformedData = new ArrayList<DataPoint>(data.size());
+		for (DataPoint datapoint : data) {
+			transformedData.add(transformDataPoint(datapoint));
+		}
+	}
+	
+	private DataPoint transformDataPoint(DataPoint datapoint) {
+		
+		List<Double> features = datapoint.getFeatures();
+		double[][] difference = new double[1][features.size()];
+		for (int i = 0; i < features.size(); i++) {
+			difference[0][i] = features.get(i) - featureMeans.get(i);
+		}
+		DoubleMatrix2D diff = new DenseDoubleMatrix2D(difference);
+		DoubleMatrix2D newVector = null;
+		
+		newVector = diff.zMult(transformationMatrix, newVector);
+		
+		List<Double> newFeatures = new ArrayList<Double>(newVector.columns());
+		for (int i = 0; i < newVector.columns(); i++) {
+			newFeatures.add(newVector.get(0, i));
+		}
+		
+		return new DataPoint(newFeatures, datapoint.getOutputs());
+	}
+	
+	private void constructTransformationMatrix() {
+		double[][] transformationMatrix = new double[principleMatrix.rows()][numPrincipleComponents];
+		int rows = transformationMatrix.length;
+		int columns = transformationMatrix[0].length;
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				transformationMatrix[i][j] = principleMatrix.get(i, j + (columns - numPrincipleComponents));
+			}
+		}
+		this.transformationMatrix = new DenseDoubleMatrix2D(transformationMatrix);
 	}
 
-	public void centerAtZero() {
+	private void centerAtZero() {
 		featureMeans = new ArrayList<>();
 		for (int i = 0; i < data.get(0).getFeatures().size(); i++) {
 			featureMeans.add(new Double(0.0));
@@ -37,8 +81,7 @@ public class PCA {
 		for (DataPoint dataPoint : data) {
 			for (int i = 0; i < dataPoint.getFeatures().size(); i++) {
 				double currentSum = featureMeans.get(i);
-				featureMeans
-						.set(i, currentSum + dataPoint.getFeatures().get(i));
+				featureMeans.set(i, currentSum + dataPoint.getFeatures().get(i));
 			}
 		}
 		for (int i = 0; i < featureMeans.size(); i++) {
@@ -47,13 +90,12 @@ public class PCA {
 		for (int i = 0; i < data.size(); i++) {
 			for (int j = 0; j < data.get(i).getFeatures().size(); j++) {
 				Double oldValue = data.get(i).getFeatures().get(j);
-				data.get(i).getFeatures()
-						.set(j, oldValue - featureMeans.get(j));
+				data.get(i).getFeatures().set(j, oldValue - featureMeans.get(j));
 			}
 		}
 	}
 
-	public void calculateCovarianceMatrix() {
+	private void calculateCovarianceMatrix() {
 		int numDimensions = featureMeans.size();
 		double[][] covarianceMatrix = new double[numDimensions][numDimensions];
 
@@ -66,8 +108,7 @@ public class PCA {
 
 	}
 
-	public Double calculateCovariance(int dimensionOneIndex,
-			int dimensionTwoIndex) {
+	private Double calculateCovariance(int dimensionOneIndex, int dimensionTwoIndex) {
 
 		Double covariance = 0.0;
 		Double dimensionOneMean = featureMeans.get(dimensionOneIndex);
@@ -84,22 +125,15 @@ public class PCA {
 		return covariance;
 	}
 
-	public void calculateEigenVectors() {
+	private void calculateEigenVectors() {
 		eigenValueDecomp = new EigenvalueDecomposition(covarianceMatrix);
 	}
 
-	public void findPrincipleComponents() {
+	private void findPrincipleComponents() {
 
 		DoubleMatrix2D eigenVectors = eigenValueDecomp.getV();
 
 		DoubleMatrix1D eigenValues = eigenValueDecomp.getRealEigenvalues();
-		
-		System.out.println("Original EigenValues");
-		for (int i = 0; i < eigenValues.size(); i++){
-			System.out.println(eigenValues.get(i));
-		}
-		System.out.println("\nOriginal EigenVectors");
-		printMatrix(eigenVectors);
 		
 		/*
 		 * sort the eigenvalues and re-arrange the eigenvector matrix at the same time.
@@ -120,18 +154,14 @@ public class PCA {
 				}
 			}
 		}
-
-		System.out.println("\nModified EigenVectors");
-		printMatrix(eigenVectors);
 		
 
 		principleMatrix = eigenVectors;
-		//printMatrix(principleMatrix);
 	}
 
 	public void printMatrix(DoubleMatrix2D mat) {
-		for (int i = 0; i < mat.columns(); i++) {
-			for (int j = 0; j < mat.rows(); j++) {
+		for (int i = 0; i < mat.rows(); i++) {
+			for (int j = 0; j < mat.columns(); j++) {
 				System.out.print(mat.get(i, j) + " ");
 			}
 			System.out.println();
