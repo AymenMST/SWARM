@@ -22,6 +22,8 @@ public class ACO {
 	static double worseDropoffProbability = 0.05;
 	static int xSpace = 500;
 	static int ySpace = 500;
+	static int neighborhoodSize = 30;
+	static int maxMove = 40;
 	
 	/**
 	 * Creates a new ACO algorithm to be run on specified data.
