@@ -260,7 +260,6 @@ public class KMeansClustering extends ClusteringMethod {
 			double point2 = center.get(dim2);
 			Node node = new Node(null, new Point2D.Double((point1 + 20) * 20, (point2 + 20) * 20));
 			node.setColor(Color.GREEN);
-			node.setLayer(1);
 			g.addVertex(node);
 		}
 		

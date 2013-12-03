@@ -39,9 +39,8 @@ public class JungHandler {
 		
 	}
 	
-	public void setGraph(Forest<Node, Edge> forest) {
-		//forest = sortByLayer(forest);
-		layout = new TreeLayout<>(forest);
+	public void setGraph(Graph graph) {
+		layout = new TreeLayout<>(graph);
 		viewer = new BasicVisualizationServer<>(layout);
 		
 		// Map nodes to their internally stored colors
@@ -52,7 +51,7 @@ public class JungHandler {
         };
 		viewer.getRenderContext().setVertexFillPaintTransformer(vertexColor);
 		
-		for (Node n : forest.getVertices()) {
+		for (Node n : graph.getVertices()) {
 			layout.setLocation(n, n.getLocation());
 		}
 		
@@ -82,30 +81,6 @@ public class JungHandler {
 			}
 		}
 		imageCount++;
-	}
-	
-	/**
-	 * A bubble sort method performed on each node's layer index.
-	 * Does not work with edges, must implement if necessary.
-	 * 
-	 * @return 
-	 */
-	public Forest<Node, Edge> sortByLayer(Forest<Node, Edge> forest) {
-		List<Node> nodes = new ArrayList<Node>(forest.getVertices());
-		for (int i = 0; i < nodes.size(); i++) {
-			for (int j = 0; j < nodes.size() - 1 - i; j++) {
-				if (nodes.get(j).getLayer() > nodes.get(j + 1).getLayer()) {
-					Node temp = nodes.get(j);
-					nodes.set(j, nodes.get(j + 1));
-					nodes.set(j + 1, temp);
-				}
-			}
-		}
-		Forest<Node, Edge> newForest = new Graph();
-		for (Node node : nodes) {
-			newForest.addVertex(node);
-		}
-		return newForest;
 	}
 	
 	public void setDimensions(int width, int height) {

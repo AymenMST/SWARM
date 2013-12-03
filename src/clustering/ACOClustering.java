@@ -79,7 +79,6 @@ public class ACOClustering extends ClusteringMethod {
 			Node node = ant.toNode();
 			
 			node.setColor(ant.getColor());
-			node.setLayer(1);
 			g.addVertex(node);
 		}
 		
