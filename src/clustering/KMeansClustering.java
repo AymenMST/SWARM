@@ -22,7 +22,7 @@ public class KMeansClustering extends ClusteringMethod {
 	private Graph graph;
 	private Distance dist = new Euclidean();
 	// the number of clusters, or means
-	private int k = 0;
+	private int k = 8;
 	private int numFeatures = 0;
 	// the amount of change allowable during an update of the algorithm for
 	// completion
@@ -51,10 +51,7 @@ public class KMeansClustering extends ClusteringMethod {
 	 * @param data The training data that will be used to identify clusters
 	 */
 	public void cluster() {
-		
-		// set k to the number of potential classes
-		k = data.get(0).getOutputs().size();
-		
+			
 		// build graph from datapoints if not set
 		if (graph == null) {
 			this.graph = new Graph();

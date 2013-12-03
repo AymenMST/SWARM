@@ -16,8 +16,8 @@ public class Simulator {
 	public static void main(String[] args) {
 
 		int maxDataSetSize = 500;
-//		GraphFitness fitnessEvaluation = new DunnGraphFitness();
-		GraphFitness fitnessEvaluation = new DaviesBouldinGraphFitness();
+		GraphFitness fitnessEvaluation = new DunnGraphFitness();
+//		GraphFitness fitnessEvaluation = new DaviesBouldinGraphFitness();
 
 		// get input data
 		Inputter inputter;
@@ -49,7 +49,7 @@ public class Simulator {
 //		cluster.run();
 		
 		cluster = new CompetitiveLearningClustering(data, fitnessEvaluation);
-		//cluster.run();
+		cluster.run();
 		
 		// Test ACO
 //		cluster = new ACOClustering(data, fitnessEvaluation);

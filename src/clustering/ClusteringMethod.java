@@ -57,7 +57,10 @@ public abstract class ClusteringMethod {
 
 		// print results
 		System.out.println();
-		System.out.println(performance + "\t" + elapsedTime);
+		
+		System.out.println("   Clusters: "+clusters.size());
+		System.out.println("Performance: "+performance);
+		System.out.println("       Time: "+elapsedTime);
 
 	}
 
