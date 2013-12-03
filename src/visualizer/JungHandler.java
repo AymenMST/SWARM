@@ -74,6 +74,9 @@ public class JungHandler {
 		        }
 		        catch(Exception exception) { System.out.println("Could not save image"); }
 			} else {
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {	e.printStackTrace();	}
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setVisible(true);
 			}

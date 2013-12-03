@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import tools.Tools;
 
@@ -21,6 +20,7 @@ import driver.DataPoint;
 public class KMeansClustering extends ClusteringMethod {
 
 	private Graph graph;
+	private Distance dist = new Euclidean();
 	// the number of clusters, or means
 	private int k = 0;
 	private int numFeatures = 0;
@@ -37,31 +37,23 @@ public class KMeansClustering extends ClusteringMethod {
 	// whether or not to use the datapoints' virtual locations
 	private boolean useVirtualLocations = false;
 
-	private Random random = new Random(11235);
-	private Distance dist = new Euclidean();
-
+	/**
+	 * Creates a driver for the K-Means Clustering algorithm.
+	 * 
+	 * @param data					The data to cluster with KMeans.
+	 * @param fitnessEvaluation		The fitness evaluation to use.
+	 */
 	public KMeansClustering(List<DataPoint> data, GraphFitness fitnessEvaluation) {
 		super(data, fitnessEvaluation);
 	}
 
 	/**
-	 * @param data
-	 *            The training data that will be used to identify clusters
+	 * @param data The training data that will be used to identify clusters
 	 */
 	public void cluster() {
 		
 		// set k to the number of potential classes
 		k = data.get(0).getOutputs().size();
-		// the size of the input space
-		numFeatures = 0;
-		for (Node node : graph.getVertices()) {
-			DataPoint datapoint = node.getDataPoint();
-			if (useVirtualLocations)
-				numFeatures = node.getLocationVector().size();
-			else
-				numFeatures = datapoint.getFeatures().size();
-			break;
-		}
 		
 		// build graph from datapoints if not set
 		if (graph == null) {
@@ -70,18 +62,29 @@ public class KMeansClustering extends ClusteringMethod {
 				graph.addVertex(new Node(point));
 			}
 		}
+		
+		// the size of the input space
+		numFeatures = 0;
+		for (Node node : graph.getVertices()) {
+			// use the first data point to get the number of features
+			DataPoint datapoint = node.getDataPoint();
+			// usage either virtual or feature space based on selection
+			if (useVirtualLocations)
+				numFeatures = node.getLocationVector().size();
+			else
+				numFeatures = datapoint.getFeatures().size();
+			break;
+		}
 
 		// set up the new list of centers
 		initializeCenters();
-			
-		if (visualize)
-			drawGraph();
 
+		// until changes are very small, continue training iterations
 		double change;
 		do {
+			// perform a single training iteration
 			change = trainIteration();
-			//System.out.print(String.format("%20s  : ",String.valueOf(change)));
-			//System.out.println(centers.get(0));
+			// draw the visualizer to the screen
 			if (visualize)
 				drawGraph();
 		} while (change > threshold);
@@ -98,16 +101,26 @@ public class KMeansClustering extends ClusteringMethod {
 
 	}
 
+	/**
+	 * Assign a node to the nearest center.
+	 * 
+	 * @param node	The node to assign.
+	 * @return		The cluster corresponding to the nearest center.
+	 */
 	public int assignCluster(Node node) {
 		DataPoint datapoint = node.getDataPoint();
 		double minDistance = Double.MAX_VALUE;
 		int closestCenter = 0;
+		
+		// for each center
 		for (int center = 0; center < k; center++) {
+			// calculate distance to current center
 			double distance = 0.0;
 			if (useVirtualLocations)
 				distance = dist.distance(node.getLocationVector(), centers.get(center));
 			else
 				distance = dist.distance(datapoint.getFeatures(), centers.get(center));
+			// store min distance (and corresponding closest center)
 			if (distance < minDistance) {
 				minDistance = distance;
 				closestCenter = center;
@@ -116,17 +129,31 @@ public class KMeansClustering extends ClusteringMethod {
 		return closestCenter;
 	}
 
+	/**
+	 * Performs a single training iteration for the KMeans clustering algorithm.
+	 * 
+	 * @return	The largest change that occurred to the centers.
+	 */
 	public double trainIteration() {
 		double change = 0.0;
+		// for all nodes in the graph
 		for (Node node : graph.getVertices()) {
+			// assign to the closest center
 			DataPoint datapoint = node.getDataPoint();
 			int closestCenter = assignCluster(node);
+			// map datapoints to their corresponding centers
 			clustersMap.put(datapoint, closestCenter);
 		}
+		// update the centers
 		change = calculateCenters();
 		return change;
 	}
 
+	/**
+	 * Performs the center update rule according to the KMeans algorithm.
+	 * 
+	 * @return	The largest change made to a center.
+	 */
 	private double calculateCenters() {
 		double change = 0.0;
 		// create points structure
@@ -153,24 +180,29 @@ public class KMeansClustering extends ClusteringMethod {
 		// update centers
 		for (int center = 0; center < k; center++) {
 			List<Double> newCenter = new ArrayList<Double>();
+			// loop through all features of the current center
 			for (int feature = 0; feature < numFeatures; feature++) {
 				double average = 0.0;
+				// loop through all the datapoints associated with the current center
 				for (List<Double> point : points.get(center)) {
 					average += point.get(feature);
 				}
 
+				// calculate averages
 				if (points.get(center).size() != 0)
 					average /= points.get(center).size();
 				else
 					average = centers.get(center).get(feature);
 
-				change = Math.max(change,
-						Math.abs(average - centers.get(center).get(feature)));
+				// record the max amount by which the centers have changed
+				change = Math.max(change, Math.abs(average - centers.get(center).get(feature)));
+				
+				// build new center
 				newCenter.add(average);
 			}
+			// move center to new location
 			centers.set(center, newCenter);
 		}
-		// System.out.println("CHANGE: "+change+"\n");
 		return change;
 	}
 
@@ -197,6 +229,9 @@ public class KMeansClustering extends ClusteringMethod {
 		return centers;
 	}
 	
+	/**
+	 * Draws a visualization of the KMeans algorithm for each time step.
+	 */
 	public void drawGraph() {
 		
 		g = new Graph();
@@ -234,13 +269,14 @@ public class KMeansClustering extends ClusteringMethod {
 		
 	}
 	
+	/**
+	 * Sets the graph extracted from virtual 2D space (used by ACO).
+	 * 
+	 * @param graph	The graph in virtual 2D space to cluster.
+	 */
 	public void setPseudoGraph(Graph graph) {
 		this.graph = graph;
 		this.useVirtualLocations = true;
-	}
-	
-	public void setUseVirtualLocations(boolean useVirtualLocations) {
-		this.useVirtualLocations = useVirtualLocations;
 	}
 
 	/**

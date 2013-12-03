@@ -13,33 +13,41 @@ import graph.Node;
 public class ACOClustering extends ClusteringMethod {
 	
 	private ACO aco;
-	private int xSpace = 800;
-	private int ySpace = 800;
 	private KMeansClustering kmeans;
-	private int checks = 100;
 	
+	// initialize tunable params
+	private int checks = 1000;
+	private int maxIterations = 50000;
 
+	/**
+	 * Creates the driver for the ACO clustering algorithm.
+	 * 
+	 * @param data					The data to run ACO on.
+	 * @param fitnessEvaluation		The fitness evaluation to use for ACO.
+	 */
 	public ACOClustering(List<DataPoint> data, GraphFitness fitnessEvaluation) {
 		super(data, fitnessEvaluation);
-		aco = new ACO(data, xSpace, ySpace);
-		jungHandler.setDimensions(xSpace, ySpace);
+		aco = new ACO(data);
+		jungHandler.setDimensions(aco.getXSpace(), aco.getYSpace());
 	}
 
 	@Override
 	public void cluster() {
 		
+		// identify "clusters" in the 2D virtual space
 		kmeans = new KMeansClustering(data, fitnessEvaluation);
 		
-		for (int i = 0; i < 50000; i++) {
-			if (visualize && !jungHandler.isSavingImages()) {
-				try {
-					Thread.sleep(200);
-				} catch (InterruptedException e) {	e.printStackTrace();	}
-			}
+		// loop until converged, or max iterations reached
+		for (int i = 0; i < maxIterations; i++) {
+			
+			// run a single iteration of the ACO algorithm
 			aco.runIteration();
+			
+			// draw the visualizer for the ACO
 			if (visualize)
 				drawGraph();
 			
+			// stop to evaluate fitness of the created graph
 			if (i%checks == 0) {
 				kmeans.setPseudoGraph(aco.getGraph());
 				kmeans.cluster();
@@ -47,10 +55,16 @@ public class ACOClustering extends ClusteringMethod {
 				double fitness = fitnessEvaluation.getFitness(clusters);
 				System.out.println(Tools.round(fitness, 4));
 			}
+			
+			// TODO: stop when fitness is optimal
+			
 		}
 		
 	}
 	
+	/**
+	 * Draw a graph of the ACO algorithm at the current time step.
+	 */
 	public void drawGraph() {
 		
 		g = new Graph();
@@ -69,15 +83,10 @@ public class ACOClustering extends ClusteringMethod {
 			g.addVertex(node);
 		}
 		
+		// draw graph
 		jungHandler.setGraph(g);
 		jungHandler.draw();
 		
-	}
-
-	@Override
-	public List<List<Double>> getCenters() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	

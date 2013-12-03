@@ -16,7 +16,7 @@ public class ACO {
 	Colony colony;
 	
 	// initialize tunable parameters
-	static int numAnts = 25;
+	static int numAnts = 1;
 	static double pickupGain = 0.05;
 	static double dropGain = 0.00005;
 	static double worseDropoffProbability = 0.05;
@@ -85,6 +85,20 @@ public class ACO {
 	 */
 	public Graph getGraph() {
 		return g;
+	}
+	
+	/**
+	 * @return	The width of the virtual space.
+	 */
+	public int getXSpace() {
+		return xSpace;
+	}
+	
+	/**
+	 * @return	The height of the virtual space.
+	 */
+	public int getYSpace() {
+		return ySpace;
 	}
 
 }

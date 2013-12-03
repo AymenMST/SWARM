@@ -47,13 +47,15 @@ public abstract class ClusteringMethod {
 		// used for timing the training algorithm
 		long startTime, elapsedTime;
 		
-		
+		// perform clustering algorithm and record runtime
 		startTime = System.currentTimeMillis();
 		cluster();
 		elapsedTime = System.currentTimeMillis() - startTime;
 
+		// evaluate the perfomance of the clustering algorithm
 		double performance = evaluate();
 
+		// print results
 		System.out.println();
 		System.out.println(performance + "\t" + elapsedTime);
 
@@ -61,29 +63,41 @@ public abstract class ClusteringMethod {
 
 	/**
 	 * The train method will be different for each implementation.
-	 * 
 	 */
 	public abstract void cluster();
 
 
+	/**
+	 * @return	A fitness value of the clusters.
+	 */
 	public double evaluate() {
 		return fitnessEvaluation.getFitness(clusters);
 	}
 	
-	public abstract List<List<Double>> getCenters();
-	
+	/**
+	 * @param visualize	Whether or not visualization should be used for the algorithm.
+	 */
 	public void setVisualize(boolean visualize) {
 		this.visualize = visualize;
 	}
 
+	/**
+	 * @param startVisualize	At what time step visualization should start occurring.
+	 */
 	public void setStartVisualize(int startVisualize) {
 		jungHandler.setStartVisualize(startVisualize);
 	}
 	
+	/**
+	 * @param directory	The directory to write images from the visualizer to.
+	 */
 	public void setVisualizeDirectory(String directory) {
 		jungHandler.saveImagesTo(directory);
 	}
 	
+	/**
+	 * @return	The clusters returned by the clustering method.
+	 */
 	public List<List<Node>> getClusters() {
 		return clusters;
 	}

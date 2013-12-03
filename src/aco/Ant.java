@@ -97,7 +97,7 @@ public class Ant {
 		//System.out.println(pickupProbability(density));
 		
 		// decide to pick something up
-		if (rand.nextDouble() <= pickupProbability(density)) {
+		if (rand.nextDouble() <= pickupProbability(density) && neighborhood.size() > 0) {
 		
 			// choose the node that is most different
 			Node toPickUp = Utilities.mostUnique(neighborhood);
