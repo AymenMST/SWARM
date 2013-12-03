@@ -44,9 +44,9 @@ public class Simulator {
 		ClusteringMethod cluster;
 
 		// Test K Means
-		cluster = new KMeansClustering(data, fitnessEvaluation);
-//		cluster.setVisualize(true);
-		cluster.run();
+//		cluster = new KMeansClustering(data, fitnessEvaluation);
+////		cluster.setVisualize(true);
+//		cluster.run();
 		
 		// Test ACO
 //		cluster = new ACOClustering(data, fitnessEvaluation);
@@ -55,8 +55,8 @@ public class Simulator {
 //		cluster.run();
 		
 		// Test PSO
-//		cluster = new PSOClustering(data, fitnessEvaluation);
-//		cluster.run();
+		cluster = new PSOClustering(data, fitnessEvaluation);
+		cluster.run();
 		
 	}
 

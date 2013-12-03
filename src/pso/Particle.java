@@ -14,7 +14,7 @@ public class Particle {
 	List<Double> velocity;
 	List<Double> location;
 	List<Double> personalBest;
-	double bestFitness = Double.MAX_VALUE;
+	double bestFitness = 0.0;
 	double minValue, maxValue;
 	
 	/**
@@ -67,7 +67,7 @@ public class Particle {
 	/**
 	 * @return	The best position seen by the particle.
 	 */
-	public List<Double> getPersonalBest() {
+	public List<Double> getBestLocation() {
 		return personalBest;
 	}
 	
@@ -84,7 +84,7 @@ public class Particle {
 	public void setFitness(double fitness) {
 		this.fitness = fitness;
 		// if best, store
-		if (fitness < bestFitness) {
+		if (fitness > bestFitness) {
 			bestFitness = fitness;
 			personalBest = location;
 		}
@@ -95,6 +95,13 @@ public class Particle {
 	 */
 	public double getFitness() {
 		return fitness;
+	}
+	
+	/**
+	 * @return	The best fitness the particle has encountered.
+	 */
+	public double getBestFitness() {
+		return bestFitness;
 	}
 	
 	/**

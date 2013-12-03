@@ -14,10 +14,9 @@ public class Swarm {
 	List<List<Node>> clusters;
 	Graph g = new Graph();
 	int numClusters;
-	double globalBestFitness = -Double.MAX_VALUE;
+	double globalBestFitness = 0.0;
 	protected static List<Double> globalBest;
-	double minValue = Double.MAX_VALUE;
-	double maxValue = -Double.MAX_VALUE;
+	double minValue, maxValue;
 	
 	/**
 	 * Creates a new swarm of particles.
@@ -51,6 +50,8 @@ public class Swarm {
 	 * @param data	The data to scan for min and max values.
 	 */
 	private void getMinMaxValues(List<DataPoint> data) {
+		minValue = Double.MAX_VALUE;
+		maxValue = -Double.MAX_VALUE;
 		// for each datapoint
 		for (DataPoint point : data) {
 			// for each feature in the current datapoint
@@ -102,7 +103,7 @@ public class Swarm {
 	 * @return	The fitness of the best particle.
 	 */
 	public double evaluateParticles() {
-		double bestFitness = -Double.MAX_VALUE;
+		double bestFitness = 0.0;
 		Particle bestParticle = particles.get(0);
 		
 		// for each particle

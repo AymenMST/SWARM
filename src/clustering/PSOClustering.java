@@ -11,7 +11,7 @@ public class PSOClustering extends ClusteringMethod {
 	PSO pso;
 	int swarmSize = 3;
 	int numClusters = 2;
-	int maxIterations = 1000;
+	int maxIterations = 100;
 	
 	/**
 	 * Creates a driver for the PSO clustering algorithm.
@@ -37,8 +37,6 @@ public class PSOClustering extends ClusteringMethod {
 			String fitnessDisplay = String.valueOf(fitness);
 			
 			// display fitness results for debugging
-			if (fitness > 10000000)
-				fitnessDisplay = "infinity";
 			System.out.println("FITNESS: "+fitnessDisplay);
 			
 			i++;

@@ -45,14 +45,14 @@ public class PSO {
 	 * @return	The best solution to the clustering problem seen by any particle.
 	 */
 	public List<Double> getBestSolution() {
-		return swarm.getBestParticle().getLocation();
+		return swarm.getBestParticle().getBestLocation();
 	}
 	
 	/**
 	 * @return	The fitness of the best solution to the clustering problem seen by any particle.
 	 */
 	public double getBestFitness() {
-		return swarm.getBestParticle().getFitness();
+		return swarm.getBestParticle().getBestFitness();
 	}
 
 }
