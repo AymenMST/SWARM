@@ -1,7 +1,6 @@
 package driver;
 
-import inputter.Inputter;
-import inputter.InputterBanknote;
+import inputter.*;
 
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class Simulator {
 		// inputter = new InputterOpticalDigits();
 		// inputter = new InputterSemeion();
 		// inputter = new InputterAbalone();
-		 inputter = new InputterBanknote();
+		inputter = new InputterBanknote();
 		// inputter = new InputterBlood();
 		// inputter = new InputterCar();
 		// inputter = new InputterEEGEyeState();
@@ -41,28 +40,28 @@ public class Simulator {
 		inputter.truncate(maxDataSetSize);
 		List<DataPoint> data = inputter.getData();
 		
-		PCA pca = new PCA(2);
-		data = pca.runPCA(data);
+		PCA pca = new PCA(1);
+		//data = pca.runPCA(data);
 
 		ClusteringMethod cluster;
 
 		// Test K Means
-		cluster = new KMeansClustering(data, fitnessEvaluation);
-		//cluster.setVisualize(true);
-		cluster.run();
+//		cluster = new KMeansClustering(data, fitnessEvaluation);
+//		//cluster.setVisualize(true);
+//		cluster.run();
 		
 //		cluster = new CompetitiveLearningClustering(data, fitnessEvaluation);
 //		cluster.run();
 		
 		// Test ACO
 //		cluster = new ACOClustering(data, fitnessEvaluation);
-//		cluster.setVisualize(true);
-//		cluster.setStartVisualize(5000);
+//		//cluster.setVisualize(true);
+//		//cluster.setStartVisualize(5000);
 //		cluster.run();
 		
 		// Test PSO
-//		cluster = new PSOClustering(data, fitnessEvaluation);
-//		cluster.run();
+		cluster = new PSOClustering(data, fitnessEvaluation);
+		cluster.run();
 		
 	}
 

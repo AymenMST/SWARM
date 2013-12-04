@@ -22,7 +22,7 @@ public class KMeansClustering extends ClusteringMethod {
 	private Graph graph;
 	private Distance dist = new Euclidean();
 	// the number of clusters, or means
-	private int k = 2;
+	private int k = 5;
 	private int numFeatures = 0;
 	// the amount of change allowable during an update of the algorithm for
 	// completion

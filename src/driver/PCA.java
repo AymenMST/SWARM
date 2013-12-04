@@ -46,7 +46,7 @@ public class PCA {
 		List<Double> features = datapoint.getFeatures();
 		double[][] difference = new double[1][features.size()];
 		for (int i = 0; i < features.size(); i++) {
-			difference[0][i] = features.get(i) - featureMeans.get(i);
+			difference[0][i] = features.get(i);
 		}
 		DoubleMatrix2D diff = new DenseDoubleMatrix2D(difference);
 		DoubleMatrix2D newVector = null;

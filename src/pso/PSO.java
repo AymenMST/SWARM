@@ -4,6 +4,7 @@ import java.util.List;
 
 import driver.DataPoint;
 import fitness.GraphFitness;
+import graph.Node;
 
 public class PSO {
 	
@@ -11,11 +12,9 @@ public class PSO {
 	protected static GraphFitness fitness;
 	
 	// initialize tunable parameters
-	protected static double momentum = 0.5;
+	protected static double momentum = 0.05;
 	protected static double cognitiveDistribution = 2;			// phi_1
 	protected static double socialDistribution = 2;				// phi_2
-	protected static double minValue = 0;
-	protected static double maxValue = 10;
 	
 	/**
 	 * Creates an instance of the PSO algorithm.
@@ -53,6 +52,10 @@ public class PSO {
 	 */
 	public double getBestFitness() {
 		return swarm.getBestParticle().getBestFitness();
+	}
+	
+	public List<List<Node>> getClusters() {
+		return swarm.getClusters();
 	}
 
 }

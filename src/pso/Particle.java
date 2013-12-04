@@ -10,11 +10,11 @@ public class Particle {
 	
 	// initialize params
 	Random random = new Random(11235);
-	double fitness;
+	private double fitness;
 	List<Double> velocity;
 	List<Double> location;
 	List<Double> personalBest;
-	double bestFitness = 0.0;
+	private double bestFitness = 0.0;
 	double minValue, maxValue;
 	
 	/**

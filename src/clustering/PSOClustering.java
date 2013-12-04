@@ -9,7 +9,7 @@ import fitness.GraphFitness;
 public class PSOClustering extends ClusteringMethod {
 	
 	PSO pso;
-	int swarmSize = 3;
+	int swarmSize = 50;
 	int numClusters = 2;
 	int maxIterations = 100;
 	
@@ -25,7 +25,7 @@ public class PSOClustering extends ClusteringMethod {
 
 	@Override
 	public void cluster() {
-		// create a new PSO algorithm instance, passing in relevent params
+		// create a new PSO algorithm instance, passing in relevant params
 		pso = new PSO(swarmSize, data, numClusters, fitnessEvaluation);
 		
 		// loop until stopping criteria
@@ -41,6 +41,8 @@ public class PSOClustering extends ClusteringMethod {
 			
 			i++;
 		} while (i < maxIterations);
+		
+		this.clusters = pso.getClusters();
 		
 	}
 

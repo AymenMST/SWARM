@@ -19,8 +19,7 @@ public class CompetitiveLearningClustering extends ClusteringMethod {
 	
 	CompetitiveLearning competitiveLearning;
 	int numInputs;
-	int numOutputs = 50;
-	int maxIterations = 100;
+	int numOutputs = 10;
 	Map<Integer, List<DataPoint>> clusterMap = new HashMap<Integer, List<DataPoint>>();
 
 	public CompetitiveLearningClustering(List<DataPoint> data, GraphFitness fitnessEvaluation) {

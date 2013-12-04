@@ -104,7 +104,7 @@ public class Swarm {
 	 */
 	public double evaluateParticles() {
 		double bestFitness = 0.0;
-		Particle bestParticle = particles.get(0);
+		Particle bestParticle = null;
 		
 		// for each particle
 		for (Particle particle : particles) {
@@ -157,16 +157,20 @@ public class Swarm {
 	 */
 	public Particle getBestParticle() {
 		Particle bestParticle = particles.get(0);
-		double bestFitness = Double.MAX_VALUE;
+		double bestFitness = 0;
 		// for each particle
 		for (Particle particle : particles) {
 			// store best particle
-			if (particle.getFitness() > bestFitness) {
-				bestFitness = particle.getFitness();
+			if (particle.getBestFitness() > bestFitness) {
+				bestFitness = particle.getBestFitness();
 				bestParticle = particle;
 			}
 		}
 		return bestParticle;
+	}
+	
+	public List<List<Node>> getClusters() {
+		return clusters;
 	}
 
 }
