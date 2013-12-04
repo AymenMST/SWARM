@@ -13,7 +13,6 @@ public class Node {
 	private DataPoint dataPoint;
 	private Point2D.Double location;
 	private Color color = Color.BLUE;
-	private int layer = 0;
 	private double error = 0;
 
 	/**

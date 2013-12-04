@@ -6,11 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import roc.TunableParameter;
 import neural_net.Network;
 import neural_net.StructuralInfo;
-
 import competitive_learning.CompetitiveLearning;
-
 import driver.DataPoint;
 import fitness.GraphFitness;
 import graph.Node;
@@ -63,6 +62,12 @@ public class CompetitiveLearningClustering extends ClusteringMethod {
 			clusters.add(group);
 		}
 
+	}
+
+	@Override
+	public void setTunableParameters(List<TunableParameter> tunableParameters) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

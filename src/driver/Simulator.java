@@ -1,21 +1,30 @@
 package driver;
 
-import inputter.*;
+import inputter.Inputter;
+import inputter.InputterBanknote;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import clustering.*;
-import fitness.*;
+import roc.ROC;
+import roc.Range;
+import roc.TunableParameter;
+import clustering.ClusteringMethod;
+import clustering.KMeansClustering;
+import fitness.DunnGraphFitness;
+import fitness.GraphFitness;
 
 /**
  * Main driver used to test various classifier training algorithms.
  */
 public class Simulator {
+	
+	private ClusteringMethod cluster;
+	private GraphFitness fitnessEvaluation;
 
-	public static void main(String[] args) {
-
+	public Simulator(){
 		int maxDataSetSize = 500;
-		GraphFitness fitnessEvaluation = new DunnGraphFitness();
+		fitnessEvaluation = new DunnGraphFitness();
 //		GraphFitness fitnessEvaluation = new DaviesBouldinGraphFitness();
 
 		// get input data
@@ -43,12 +52,10 @@ public class Simulator {
 		PCA pca = new PCA(1);
 		//data = pca.runPCA(data);
 
-		ClusteringMethod cluster;
 
 		// Test K Means
-//		cluster = new KMeansClustering(data, fitnessEvaluation);
-//		//cluster.setVisualize(true);
-//		cluster.run();
+		//cluster.setVisualize(true);
+		runKMeansClustering(data);
 		
 //		cluster = new CompetitiveLearningClustering(data, fitnessEvaluation);
 //		cluster.run();
@@ -57,12 +64,35 @@ public class Simulator {
 //		cluster = new ACOClustering(data, fitnessEvaluation);
 //		//cluster.setVisualize(true);
 //		//cluster.setStartVisualize(5000);
-//		cluster.run();
 		
 		// Test PSO
-		cluster = new PSOClustering(data, fitnessEvaluation);
-		cluster.run();
+//		cluster = new PSOClustering(data, fitnessEvaluation);
 		
+		cluster.run();
+	}
+	
+	public void roc(){
+		
+	}
+
+	
+	public void runKMeansClustering(List<DataPoint> data){
+		
+		
+		
+		List<TunableParameter> tunableParameters = new ArrayList<>();
+		
+		tunableParameters.add(new TunableParameter<Integer>("k", 2, new Range<Integer>(2, 10)));
+		
+		ROC roc = new ROC(cluster, tunableParameters);
+		
+		cluster = new KMeansClustering(data, fitnessEvaluation);
+	}
+	
+	
+	public static void main(String[] args) {
+
+		new Simulator();
 	}
 
 }

@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import roc.TunableParameter;
 import tools.Tools;
-
 import distance.Distance;
 import distance.Euclidean;
 import driver.DataPoint;
@@ -22,7 +22,7 @@ public class KMeansClustering extends ClusteringMethod {
 	private Graph graph;
 	private Distance dist = new Euclidean();
 	// the number of clusters, or means
-	private int k = 5;
+	private int k;
 	private int numFeatures = 0;
 	// the amount of change allowable during an update of the algorithm for
 	// completion
@@ -40,18 +40,21 @@ public class KMeansClustering extends ClusteringMethod {
 	/**
 	 * Creates a driver for the K-Means Clustering algorithm.
 	 * 
-	 * @param data					The data to cluster with KMeans.
-	 * @param fitnessEvaluation		The fitness evaluation to use.
+	 * @param data
+	 *            The data to cluster with KMeans.
+	 * @param fitnessEvaluation
+	 *            The fitness evaluation to use.
 	 */
 	public KMeansClustering(List<DataPoint> data, GraphFitness fitnessEvaluation) {
 		super(data, fitnessEvaluation);
 	}
 
 	/**
-	 * @param data The training data that will be used to identify clusters
+	 * @param data
+	 *            The training data that will be used to identify clusters
 	 */
 	public void cluster() {
-			
+
 		// build graph from datapoints if not set
 		if (graph == null) {
 			this.graph = new Graph();
@@ -59,7 +62,7 @@ public class KMeansClustering extends ClusteringMethod {
 				graph.addVertex(new Node(point));
 			}
 		}
-		
+
 		// the size of the input space
 		numFeatures = 0;
 		for (Node node : graph.getVertices()) {
@@ -85,7 +88,7 @@ public class KMeansClustering extends ClusteringMethod {
 			if (visualize)
 				drawGraph();
 		} while (change > threshold);
-		
+
 		// get clusters
 		clusters = new ArrayList<>(k);
 		for (int i = 0; i < k; i++) {
@@ -101,14 +104,15 @@ public class KMeansClustering extends ClusteringMethod {
 	/**
 	 * Assign a node to the nearest center.
 	 * 
-	 * @param node	The node to assign.
-	 * @return		The cluster corresponding to the nearest center.
+	 * @param node
+	 *            The node to assign.
+	 * @return The cluster corresponding to the nearest center.
 	 */
 	public int assignCluster(Node node) {
 		DataPoint datapoint = node.getDataPoint();
 		double minDistance = Double.MAX_VALUE;
 		int closestCenter = 0;
-		
+
 		// for each center
 		for (int center = 0; center < k; center++) {
 			// calculate distance to current center
@@ -129,7 +133,7 @@ public class KMeansClustering extends ClusteringMethod {
 	/**
 	 * Performs a single training iteration for the KMeans clustering algorithm.
 	 * 
-	 * @return	The largest change that occurred to the centers.
+	 * @return The largest change that occurred to the centers.
 	 */
 	public double trainIteration() {
 		double change = 0.0;
@@ -149,7 +153,7 @@ public class KMeansClustering extends ClusteringMethod {
 	/**
 	 * Performs the center update rule according to the KMeans algorithm.
 	 * 
-	 * @return	The largest change made to a center.
+	 * @return The largest change made to a center.
 	 */
 	private double calculateCenters() {
 		double change = 0.0;
@@ -180,7 +184,8 @@ public class KMeansClustering extends ClusteringMethod {
 			// loop through all features of the current center
 			for (int feature = 0; feature < numFeatures; feature++) {
 				double average = 0.0;
-				// loop through all the datapoints associated with the current center
+				// loop through all the datapoints associated with the current
+				// center
 				for (List<Double> point : points.get(center)) {
 					average += point.get(feature);
 				}
@@ -193,7 +198,7 @@ public class KMeansClustering extends ClusteringMethod {
 
 				// record the max amount by which the centers have changed
 				change = Math.max(change, Math.abs(average - centers.get(center).get(feature)));
-				
+
 				// build new center
 				newCenter.add(average);
 			}
@@ -225,33 +230,33 @@ public class KMeansClustering extends ClusteringMethod {
 	public List<List<Double>> getCenters() {
 		return centers;
 	}
-	
+
 	/**
 	 * Draws a visualization of the KMeans algorithm for each time step.
 	 */
 	public void drawGraph() {
-		
+
 		g = new Graph();
-		
+
 		// draw first 2 dimensions
 		int dim1 = 0;
 		int dim2 = 1;
-		
+
 		// add data points
 		for (Node node : graph.getVertices()) {
 			DataPoint d = node.getDataPoint();
 			double point1 = d.getFeatures().get(dim1);
 			double point2 = d.getFeatures().get(dim2);
 			Node vertex = new Node(d, new Point2D.Double((point1 + 20) * 20, (point2 + 20) * 20));
-			
-			//Add color to nodes here
-			if (d.getClassIndex() == 0){
+
+			// Add color to nodes here
+			if (d.getClassIndex() == 0) {
 				vertex.setColor(Color.CYAN);
 			}
 			vertex.setAlpha(0.1);
 			g.addVertex(vertex);
 		}
-		
+
 		// add centers
 		for (List<Double> center : centers) {
 			double point1 = center.get(dim1);
@@ -260,16 +265,17 @@ public class KMeansClustering extends ClusteringMethod {
 			node.setColor(Color.GREEN);
 			g.addVertex(node);
 		}
-		
+
 		jungHandler.setGraph(g);
 		jungHandler.draw();
-		
+
 	}
-	
+
 	/**
 	 * Sets the graph extracted from virtual 2D space (used by ACO).
 	 * 
-	 * @param graph	The graph in virtual 2D space to cluster.
+	 * @param graph
+	 *            The graph in virtual 2D space to cluster.
 	 */
 	public void setPseudoGraph(Graph graph) {
 		this.graph = graph;
@@ -285,6 +291,22 @@ public class KMeansClustering extends ClusteringMethod {
 		if (k > 0)
 			clusters = Integer.toString(k);
 		return clusters + "-Means Clustering";
+	}
+
+	@Override
+	public void setTunableParameters(List<TunableParameter> tunableParameters) {
+		try {
+			for (TunableParameter t : tunableParameters) {
+				switch(t.getParameterName()){
+				case "k":
+					k = (int) t.getValue();
+					break;
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Error");
+		}
+
 	}
 
 }

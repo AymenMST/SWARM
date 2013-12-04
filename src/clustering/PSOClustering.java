@@ -3,6 +3,7 @@ package clustering;
 import java.util.List;
 
 import pso.PSO;
+import roc.TunableParameter;
 import driver.DataPoint;
 import fitness.GraphFitness;
 
@@ -49,6 +50,12 @@ public class PSOClustering extends ClusteringMethod {
 	@Override
 	public double evaluate() {
 		return pso.getBestFitness();
+	}
+
+	@Override
+	public void setTunableParameters(List<TunableParameter> tunableParameters) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

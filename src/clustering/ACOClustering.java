@@ -2,6 +2,7 @@ package clustering;
 
 import java.util.List;
 
+import roc.TunableParameter;
 import tools.Tools;
 import aco.ACO;
 import aco.Ant;
@@ -85,6 +86,12 @@ public class ACOClustering extends ClusteringMethod {
 		// draw graph
 		jungHandler.setGraph(g);
 		jungHandler.draw();
+		
+	}
+
+	@Override
+	public void setTunableParameters(List<TunableParameter> tunableParameters) {
+		// TODO Auto-generated method stub
 		
 	}
 

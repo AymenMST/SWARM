@@ -5,8 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -15,7 +13,6 @@ import org.apache.commons.collections15.Transformer;
 
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.layout.TreeLayout;
-import edu.uci.ics.jung.graph.Forest;
 import edu.uci.ics.jung.visualization.BasicVisualizationServer;
 import graph.Edge;
 import graph.Graph;
