@@ -70,6 +70,7 @@ public class InputterSemeion extends Inputter {
 		return index;
 	}
 
+	@SuppressWarnings("serial")
 	@Override
 	public void findClasses() {
 		possibleClasses = new ArrayList<String>() {{

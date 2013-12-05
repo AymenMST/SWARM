@@ -56,6 +56,7 @@ public class InputterLetterRecognition extends Inputter {
 
 	}
 
+	@SuppressWarnings("serial")
 	@Override
 	public void findClasses() {
 		possibleClasses = new ArrayList<String>() {{

@@ -12,26 +12,32 @@ public class InputterCar extends Inputter {
 
 	private final String filePath = "datasets/car.data";
 	
+	@SuppressWarnings("serial")
 	private final List<String> buying = new ArrayList<String>() {{
 		add("vhigh"); add("high"); add("med"); add("low"); 
 	}};
 	
+	@SuppressWarnings("serial")
 	private final List<String> maint = new ArrayList<String>() {{
 		add("vhigh"); add("high"); add("med"); add("low"); 
 	}};
 	
+	@SuppressWarnings("serial")
 	private final List<String> doors = new ArrayList<String>() {{
 		add("2"); add("3"); add("4"); add("5more"); 
 	}};
 	
+	@SuppressWarnings("serial")
 	private final List<String> persons = new ArrayList<String>() {{
 		add("2"); add("4"); add("more"); 
 	}};
 	
+	@SuppressWarnings("serial")
 	private final List<String> lug_boot = new ArrayList<String>() {{
 		add("small"); add("med"); add("big");
 	}};
 	
+	@SuppressWarnings("serial")
 	private final List<String> safety = new ArrayList<String>() {{
 		add("low"); add("med"); add("high");
 	}};
@@ -83,12 +89,12 @@ public class InputterCar extends Inputter {
 				List<Double> featureList = new ArrayList<>();
 				
 				// using the lists of input values, add each feature to the featurelist
-				featureList.add(getFeatureValue(split[0],buying));
-				featureList.add(getFeatureValue(split[1],maint));
-				featureList.add(getFeatureValue(split[2],doors));
-				featureList.add(getFeatureValue(split[3],persons));
-				featureList.add(getFeatureValue(split[4],lug_boot));
-				featureList.add(getFeatureValue(split[5],safety));
+				featureList.add(getFeatureValue(split[0], buying));
+				featureList.add(getFeatureValue(split[1], maint));
+				featureList.add(getFeatureValue(split[2], doors));
+				featureList.add(getFeatureValue(split[3], persons));
+				featureList.add(getFeatureValue(split[4], lug_boot));
+				featureList.add(getFeatureValue(split[5], safety));
 
 				List<Double> output = getOutputVector(split[inputs]);
 				data.add(new DataPoint(featureList, output));

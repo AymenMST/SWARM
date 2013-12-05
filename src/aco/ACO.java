@@ -1,45 +1,58 @@
 package aco;
 
-import graph.Edge;
 import graph.Graph;
-import graph.Heuristic;
-import graph.HeuristicConstant;
 import graph.Node;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import driver.DataPoint;
-import edu.uci.ics.jung.graph.Forest;
 
 public class ACO {
 	
-	static Heuristic heuristic = new HeuristicConstant();
-	static double pheromoneInfluence = 1.0;
-	static double attractivenessInfluence = 1.0;
-	private List<DataPoint> data;
 	Random rand = new Random(11235);
-	Forest<Node, Edge> g = new Graph();
+	Graph g = new Graph();
 	Colony colony;
 	
-	int numAnts = 25;
-	int xSpace = 500;
-	int ySpace = 500;
+	// initialize tunable parameters
+	static int numAnts = 1;
+	static double pickupGain = 0.05;
+	static double dropGain = 0.00005;
+	static double worseDropoffProbability = 0.05;
+	static int xSpace = 500;
+	static int ySpace = 500;
+	static int neighborhoodSize = 30;
+	static int maxMove = 40;
 	
+	/**
+	 * Creates a new ACO algorithm to be run on specified data.
+	 * 
+	 * @param data		The data to run the ACO clustering on.
+	 * @param xSpace	The width of the virtual space.
+	 * @param ySpace	The height of the virtual space.
+	 */
 	public ACO(List<DataPoint> data, int xSpace, int ySpace) {
 		this.xSpace = xSpace;
 		this.ySpace = ySpace;
 		initialize(data);
 	}
 	
+	/**
+	 * Creates a new ACO algorithm to be run on specified data.
+	 * 
+	 * @param data		The data to run the ACO clustering on.
+	 */
 	public ACO(List<DataPoint> data) {
 		initialize(data);
 	}
 	
+	/**
+	 * Places datapoints and ants randomly in virtual space.
+	 * 
+	 * @param data
+	 */
 	public void initialize(List<DataPoint> data) {
-		this.data = data;
 		// place data points
 		for (DataPoint d : data) {
 			int x = rand.nextInt(xSpace);
@@ -49,21 +62,43 @@ public class ACO {
 			g.addVertex(vertex);
 		}
 		// place ants
-		colony = new Colony(xSpace, ySpace, numAnts);
+		colony = new Colony(numAnts);
 	}
 	
-	public double runIteration() {
+	/**
+	 * Runs a single iteration of the ACO algorithm.
+	 */
+	public void runIteration() {
 		colony.move();
 		colony.act(g);
-		return 0.0;
 	}
 	
+	/**
+	 * @return	A list of the ants being used by the algorithm.
+	 */
 	public List<Ant> getAnts() {
 		return colony.getAnts();
 	}
 	
-	public Forest<Node, Edge> getGraph() {
+	/**
+	 * @return	The graph being modified by the ACO algorithm.
+	 */
+	public Graph getGraph() {
 		return g;
+	}
+	
+	/**
+	 * @return	The width of the virtual space.
+	 */
+	public int getXSpace() {
+		return xSpace;
+	}
+	
+	/**
+	 * @return	The height of the virtual space.
+	 */
+	public int getYSpace() {
+		return ySpace;
 	}
 
 }
