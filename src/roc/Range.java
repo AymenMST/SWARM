@@ -28,8 +28,6 @@ public class Range<T> {
 		this.upperRange = upperRange;
 	}
 	
-	public T getNextValue(){
-		T stepSize = (upperRange / lowerRange);
-	}
+
 
 }

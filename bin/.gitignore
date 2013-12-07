@@ -1,16 +1,6 @@
-/driver
-<<<<<<< HEAD
-=======
 /aco
 /clustering
-/fitness
-/graph
-/inputter
-/neural_net
-/pso
-/tools
-/visualizer
-/distance
 /competitive_learning
+/driver
+/graph
 /roc
->>>>>>> 55c3a34eb5144b17528a3c420e3d00269949909d

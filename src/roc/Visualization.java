@@ -18,12 +18,7 @@ public class Visualization {
 
 	public Visualization() {
 		frame = new JFrame("Simple Graph View");
-		layout = new TreeLayout<>(graph);
-		viewer = new BasicVisualizationServer<>(layout);
-		
-		for (Node n : graph.getVertices()) {
-			layout.setLocation(n, n.getLocation());
-		}
+
 		
 		frame.add(viewer, BorderLayout.CENTER);
 	}

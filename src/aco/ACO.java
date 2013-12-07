@@ -16,13 +16,13 @@ public class ACO {
 	Colony colony;
 	
 	// initialize tunable parameters
-	static int numAnts = 1;
+	static int numAnts = 20;
 	static double pickupGain = 0.05;
 	static double dropGain = 0.00005;
 	static double worseDropoffProbability = 0.05;
-	static int xSpace = 500;
-	static int ySpace = 500;
-	static int neighborhoodSize = 30;
+	static int xSpace = 400;
+	static int ySpace = 400;
+	static int neighborhoodSize = 35;
 	static int maxMove = 40;
 	
 	/**

@@ -16,6 +16,8 @@ public class ACOClustering extends ClusteringMethod {
 	private ACO aco;
 	private KMeansClustering kmeans;
 	
+	private double maxPerformance;
+	
 	// initialize tunable params
 	private int checks = 1000;
 	private int maxIterations = 50000;
@@ -37,7 +39,8 @@ public class ACOClustering extends ClusteringMethod {
 		
 		// identify "clusters" in the 2D virtual space
 		kmeans = new KMeansClustering(data, fitnessEvaluation);
-		
+		maxPerformance = 0;
+		List<List<Node>> bestClustering = null;
 		// loop until converged, or max iterations reached
 		for (int i = 0; i < maxIterations; i++) {
 			
@@ -55,7 +58,14 @@ public class ACOClustering extends ClusteringMethod {
 				this.clusters = kmeans.clusters;
 				double fitness = fitnessEvaluation.getFitness(clusters);
 				System.out.println(Tools.round(fitness, 4));
+				
+				
+				if (fitness > maxPerformance){
+					maxPerformance = fitness;
+					bestClustering = clusters;
+				}
 			}
+			clusters = bestClustering;
 			
 			// TODO: stop when fitness is optimal
 			

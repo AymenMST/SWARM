@@ -29,6 +29,9 @@ public class Utilities {
 		if (unique != null) {
 			greatestError /= (neighborhood.size() - 1);
 			unique.setError(greatestError);
+		}else{
+			//unique is null
+			System.out.println(neighborhood.size());
 		}
 		return unique;
 	}
