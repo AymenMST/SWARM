@@ -57,6 +57,7 @@ public class InputterCar extends Inputter {
 	public InputterCar() {
 		inputs = 6;
 		outputs = 4;
+		name = "Car";
 	}
 
 	/*

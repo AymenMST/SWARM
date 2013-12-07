@@ -28,6 +28,7 @@ public class InputterTicTacToe extends Inputter {
 	public InputterTicTacToe() {
 		inputs = 9;
 		outputs = 2;
+		name = "TicTacToe";
 	}
 
 	/*

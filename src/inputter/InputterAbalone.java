@@ -15,6 +15,7 @@ public class InputterAbalone extends Inputter {
 	public InputterAbalone() {
 		inputs = 8;
 		outputs = 29;
+		name = "Abalone";
 	}
 
 	@Override

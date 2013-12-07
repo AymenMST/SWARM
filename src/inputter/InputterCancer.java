@@ -15,6 +15,7 @@ public class InputterCancer extends Inputter {
 	public InputterCancer() {
 		inputs = 30;
 		outputs = 2;
+		name = "Cancer";
 	}
 
 	@Override

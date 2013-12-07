@@ -18,6 +18,7 @@ public class InputterSeeds extends Inputter {
 	public InputterSeeds() {
 		inputs = 7;
 		outputs = 3;
+		name = "Seeds";
 	}
 
 	@Override

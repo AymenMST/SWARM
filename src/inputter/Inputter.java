@@ -11,6 +11,7 @@ import driver.DataPoint;
  */
 public abstract class Inputter {
 	
+	protected String name = "Unnamed";
 	protected int inputs;
 	protected int outputs;
 	protected List<DataPoint> data;
@@ -88,6 +89,10 @@ public abstract class Inputter {
 			data.remove(rand.nextInt(data.size()));
 		}
 	
+	}
+	
+	public String toString() {
+		return name;
 	}
 
 }

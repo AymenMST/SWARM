@@ -39,6 +39,9 @@ public class DunnGraphFitness extends GraphFitness {
 			}
 		}
 		
+		// reset centers in case called again
+		centers = null;
+		
 		return fitness;
 	}
 

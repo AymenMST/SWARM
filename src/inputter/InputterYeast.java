@@ -15,7 +15,7 @@ public class InputterYeast extends Inputter {
 	public InputterYeast() {
 		inputs = 8;
 		outputs = 10;
-
+		name = "Yeast";
 	}
 
 	@Override

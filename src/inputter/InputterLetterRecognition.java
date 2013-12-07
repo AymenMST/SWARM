@@ -15,7 +15,7 @@ public class InputterLetterRecognition extends Inputter {
 	public InputterLetterRecognition() {
 		inputs = 16;
 		outputs = 26;
-
+		name = "LetterRecognition";
 	}
 
 	@Override

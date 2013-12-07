@@ -29,7 +29,6 @@ public class CompetitiveLearningClustering extends ClusteringMethod {
         StructuralInfo structuralInfo = new StructuralInfo(numInputs, numOutputs, new int[]{});
         Network neuralNetwork = new Network(structuralInfo);
         neuralNetwork.constructNetwork();
-        structuralInfo.describe();
         
         competitiveLearning = new CompetitiveLearning(neuralNetwork);
 		

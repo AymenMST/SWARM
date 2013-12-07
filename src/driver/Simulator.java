@@ -1,17 +1,11 @@
 package driver;
 
-import inputter.Inputter;
-import inputter.InputterBanknote;
+import inputter.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import roc.ROC;
-import roc.Range;
-import roc.TunableParameter;
-import clustering.ACOClustering;
-import clustering.ClusteringMethod;
-import clustering.KMeansClustering;
+import clustering.*;
 import fitness.DunnGraphFitness;
 import fitness.GraphFitness;
 
@@ -31,63 +25,68 @@ public class Simulator {
 		// get input data
 		Inputter inputter;
 		//inputter = new InputterLetterRecognition();
-		// inputter = new InputterPenDigits();
-		// inputter = new InputterOpticalDigits();
-		// inputter = new InputterSemeion();
-		// inputter = new InputterAbalone();
-		inputter = new InputterBanknote();
 		// inputter = new InputterBlood();
-		// inputter = new InputterCar();
-		// inputter = new InputterEEGEyeState();
 		// inputter = new InputterGlass();
-		// inputter = new InputterPoker();
-		// inputter = new InputterSeeds();
-		// inputter = new InputterTicTacToe();
-		// inputter = new InputterYeast();
+		// inputter = new InputterAbalone();
+		
+		
+		// DR
+		Inputter yeast = new InputterYeast();
+		Inputter tictactoe = new InputterTicTacToe();
+		Inputter seeds = new InputterSeeds();
+		Inputter pen = new InputterPenDigits();
+		Inputter optical = new InputterOpticalDigits();
+		// LP
+		Inputter banknote = new InputterBanknote();
+		Inputter semeion = new InputterSemeion();
+		Inputter eeg = new InputterEEGEyeState();
+		Inputter car = new InputterCar();
+		Inputter poker = new InputterPoker();
+		
+		List<Inputter> inputters = new ArrayList<>();
+		inputters.add(yeast);
+		inputters.add(tictactoe);
+		inputters.add(seeds);
+		inputters.add(pen);
+		inputters.add(optical);
+		
+//		inputters.add(banknote);
+//		inputters.add(semeion);
+//		inputters.add(eeg);
+//		inputters.add(car);
+//		inputters.add(poker);
 
-		// parse data
-		inputter.parseFile();
-		inputter.truncate(maxDataSetSize);
-		List<DataPoint> data = inputter.getData();
 		
-		PCA pca = new PCA(4);
-		data = pca.runPCA(data);
+		for (Inputter in : inputters) {
+			// parse data
+			in.parseFile();
+			in.truncate(maxDataSetSize);
+			List<DataPoint> data = in.getData();
+			
+			PCA pca = new PCA(4);
+			data = pca.runPCA(data);
 
-
-		// Test K Means
-		//cluster.setVisualize(true);
-		//runKMeansClustering(data);
+			// Test K Means
+			cluster = new KMeansClustering(data, fitnessEvaluation);
+			
+			// Test Competitive Learning
+//			cluster = new CompetitiveLearningClustering(data, fitnessEvaluation);
+			
+			// Test ACO
+//			cluster = new ACOClustering(data, fitnessEvaluation);
+			
+			// Test PSO
+//			cluster = new PSOClustering(data, fitnessEvaluation);
+			
+			System.out.print(in+"\t");
+			cluster.run();
+		}
 		
-//		cluster = new CompetitiveLearningClustering(data, fitnessEvaluation);
-//		cluster.run();
-		
-		// Test ACO
-		runACOClustering(data);
-		
-		// Test PSO
-//		cluster = new PSOClustering(data, fitnessEvaluation);
-		
-		cluster.run();
+		//cluster.run();
 	}
 	
 	public void runACOClustering(List<DataPoint> data){
-		cluster = new ACOClustering(data, fitnessEvaluation);
-//		//cluster.setVisualize(true);
-//		//cluster.setStartVisualize(5000);
-	}
-
-	
-	public void runKMeansClustering(List<DataPoint> data){
 		
-		
-		
-//		List<TunableParameter> tunableParameters = new ArrayList<>();
-//		
-//		tunableParameters.add(new TunableParameter<Integer>("k", 2, new Range<Integer>(2, 10)));
-//		
-//		ROC roc = new ROC(cluster, tunableParameters);
-		
-		cluster = new KMeansClustering(data, fitnessEvaluation);
 	}
 	
 	

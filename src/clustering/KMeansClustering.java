@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import roc.TunableParameter;
 import tools.Tools;
@@ -22,7 +23,9 @@ public class KMeansClustering extends ClusteringMethod {
 	private Graph graph;
 	private Distance dist = new Euclidean();
 	// the number of clusters, or means
-	private int k = 2;
+	private int k = 0;
+	// the maximum number of cluster, or means
+	private int maxK = 15;
 	private int numFeatures = 0;
 	// the amount of change allowable during an update of the algorithm for
 	// completion
@@ -54,7 +57,7 @@ public class KMeansClustering extends ClusteringMethod {
 	 *            The training data that will be used to identify clusters
 	 */
 	public void cluster() {
-
+		
 		// build graph from datapoints if not set
 		if (graph == null) {
 			this.graph = new Graph();
@@ -62,7 +65,7 @@ public class KMeansClustering extends ClusteringMethod {
 				graph.addVertex(new Node(point));
 			}
 		}
-
+		
 		// the size of the input space
 		numFeatures = 0;
 		for (Node node : graph.getVertices()) {
@@ -76,6 +79,37 @@ public class KMeansClustering extends ClusteringMethod {
 			break;
 		}
 
+		// attempt all possible values of k up to maxK,
+		// choosing the k with the best fitness
+		double bestFitness = 0;
+		int bestK = 0;
+		for (int k = 2; k <= maxK; k++) {
+			this.k = k;
+			runCluster();
+			try {
+				double fitness = fitnessEvaluation.getFitness(clusters);
+				if (fitness > bestFitness) {
+					bestFitness = fitness;
+					bestK = k;
+				}
+			} catch(Exception e) {
+				// invalid number of clusters for the data
+				break;
+			}
+		}
+		
+		// use the k with the best fitness and re-cluster
+		this.k = bestK;
+		runCluster();
+		double fitness = fitnessEvaluation.getFitness(clusters);
+
+	}
+	
+	/**
+	 * Performs clustering by adjusting the k centers iteratively.
+	 */
+	private void runCluster() {
+		
 		// set up the new list of centers
 		initializeCenters();
 
@@ -98,7 +132,6 @@ public class KMeansClustering extends ClusteringMethod {
 			DataPoint datapoint = node.getDataPoint();
 			clusters.get(clustersMap.get(datapoint)).add(node);
 		}
-
 	}
 
 	/**
@@ -216,7 +249,7 @@ public class KMeansClustering extends ClusteringMethod {
 		for (int center = 0; center < k; center++) {
 			ArrayList<Double> newCenter = new ArrayList<Double>(numFeatures);
 			for (int feature = 0; feature < numFeatures; feature++) {
-				newCenter.add(Tools.getRandomDouble(initCenterMin, initCenterMax));
+				newCenter.add(Tools.getRandomDouble(initCenterMin, initCenterMax, new Random(11235)));
 			}
 			centers.add(newCenter);
 		}
@@ -263,7 +296,7 @@ public class KMeansClustering extends ClusteringMethod {
 			double point2 = center.get(dim2);
 			Node node = new Node(null, new Point2D.Double((point1 + 20) * 20, (point2 + 20) * 20));
 			node.setColor(Color.GREEN);
-			g.addVertex(node);
+			//g.addVertex(node);
 		}
 
 		jungHandler.setGraph(g);

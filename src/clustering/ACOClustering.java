@@ -21,6 +21,10 @@ public class ACOClustering extends ClusteringMethod {
 	// initialize tunable params
 	private int checks = 1000;
 	private int maxIterations = 50000;
+	// the number of times performance is allowed to 
+	// be worse during checks before exiting the loop
+	private int maxWorse = 10;	
+	boolean echo = false;
 
 	/**
 	 * Creates the driver for the ACO clustering algorithm.
@@ -41,8 +45,9 @@ public class ACOClustering extends ClusteringMethod {
 		kmeans = new KMeansClustering(data, fitnessEvaluation);
 		maxPerformance = 0;
 		List<List<Node>> bestClustering = null;
+		int worseCount = 0;
 		// loop until converged, or max iterations reached
-		for (int i = 0; i < maxIterations; i++) {
+		for (int i = 0; worseCount < maxWorse && i < maxIterations; i++) {
 			
 			// run a single iteration of the ACO algorithm
 			aco.runIteration();
@@ -57,12 +62,16 @@ public class ACOClustering extends ClusteringMethod {
 				kmeans.cluster();
 				this.clusters = kmeans.clusters;
 				double fitness = fitnessEvaluation.getFitness(clusters);
-				System.out.println(Tools.round(fitness, 4));
+				if (echo)
+					System.out.println(Tools.round(fitness, 4));
 				
 				
-				if (fitness > maxPerformance){
+				if (fitness > maxPerformance) {
+					worseCount = 0;
 					maxPerformance = fitness;
 					bestClustering = clusters;
+				} else {
+					worseCount++;
 				}
 			}
 			clusters = bestClustering;

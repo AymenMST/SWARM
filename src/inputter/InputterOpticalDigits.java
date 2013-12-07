@@ -15,7 +15,7 @@ public class InputterOpticalDigits extends Inputter {
 	public InputterOpticalDigits() {
 		inputs = 64;
 		outputs = 10;
-
+		name = "OpticalDigits";
 	}
 
 	@Override

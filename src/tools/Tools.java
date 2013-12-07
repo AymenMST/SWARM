@@ -15,6 +15,18 @@ public class Tools {
 	 * @return			A random value in the range (minValue,maxValue)
 	 */
 	public static double getRandomDouble(double minValue, double maxValue) {
+		return getRandomDouble(minValue, maxValue, random);
+	}
+	
+	/**
+	 * Returns a random value between any two double values.
+	 * 
+	 * @param minValue	The minimum value that can be produced.
+	 * @param maxValue	The maximum value that can be produced.
+	 * @param random	The random generator to use for producing doubles.
+	 * @return			A random value in the range (minValue,maxValue)
+	 */
+	public static double getRandomDouble(double minValue, double maxValue, Random random) {
 		return minValue + (maxValue - minValue) * random.nextDouble();
 	}
 	

@@ -6,13 +6,17 @@ import pso.PSO;
 import roc.TunableParameter;
 import driver.DataPoint;
 import fitness.GraphFitness;
+import graph.Node;
 
 public class PSOClustering extends ClusteringMethod {
 	
 	PSO pso;
 	int swarmSize = 50;
 	int numClusters = 2;
+	int maxNumClusters = 15;
 	int maxIterations = 100;
+	int maxWorseIterations = 20;
+	boolean echo = false;
 	
 	/**
 	 * Creates a driver for the PSO clustering algorithm.
@@ -26,22 +30,57 @@ public class PSOClustering extends ClusteringMethod {
 
 	@Override
 	public void cluster() {
-		// create a new PSO algorithm instance, passing in relevant params
-		pso = new PSO(swarmSize, data, numClusters, fitnessEvaluation);
 		
-		// loop until stopping criteria
-		int i = 0;
-		do {
-			// run an iteration of the PSO algorithm
-			double fitness = pso.runIteration();
-			// evaluate the fitness of the resulting particles
-			String fitnessDisplay = String.valueOf(fitness);
+		double bestFitness = 0.0;
+		int bestNumClusters = 0;
+		List<List<Node>> bestClusters = null;
+		PSO bestPSO = null;
+		
+		for (int numClusters = 2; numClusters < maxNumClusters; numClusters++) {
+		
+			// create a new PSO algorithm instance, passing in relevant params
+			pso = new PSO(swarmSize, data, numClusters, fitnessEvaluation);
 			
-			// display fitness results for debugging
-			System.out.println("FITNESS: "+fitnessDisplay);
+			double maxFitness = 0.0;
+			int countWorseIterations = 0;
 			
-			i++;
-		} while (i < maxIterations);
+			// loop until stopping criteria
+			for (int i = 0; countWorseIterations < maxWorseIterations && i < maxIterations; i++) {
+				// run an iteration of the PSO algorithm
+				double fitness = 0.0;
+				try {
+					fitness = pso.runIteration();
+				} catch (Exception e) {
+					// number of clusters is too large for data
+					break;
+				}
+				// evaluate the fitness of the resulting particles
+				String fitnessDisplay = String.valueOf(fitness);
+				
+				// display fitness results for debugging
+				if (echo)
+					System.out.println("FITNESS: "+fitnessDisplay);
+				
+				if (fitness > maxFitness) {
+					maxFitness = fitness;
+					countWorseIterations = 0;
+					if (fitness > bestFitness) {
+						bestPSO = pso;
+					}
+				} else {
+					countWorseIterations++;
+				}
+				
+			}
+			
+			if (maxFitness > bestFitness) {
+				bestFitness = maxFitness;
+				bestNumClusters = numClusters;
+			}
+			
+		}
+		
+		pso = bestPSO;
 		
 		this.clusters = pso.getClusters();
 		
