@@ -118,12 +118,14 @@ public class PCA {
 	}
 
 	/**
-	 * Build the matrix used to transform ori
+	 * Build the matrix used to transform the original data
 	 */
 	private void constructTransformationMatrix() {
 		double[][] transformationMatrix = new double[principleMatrix.rows()][numPrincipleComponents];
 		int rows = transformationMatrix.length;
 		int columns = transformationMatrix[0].length;
+		
+		//build the transformation matrix by only keeping the number of principle components columns.
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				transformationMatrix[i][j] = principleMatrix.get(i, j + (columns - numPrincipleComponents));

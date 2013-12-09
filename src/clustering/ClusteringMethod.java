@@ -41,7 +41,7 @@ public abstract class ClusteringMethod {
 	 * network.
 	 * 
 	 */
-	public void run() {
+	public double run() {
 
 		// used for timing the training algorithm
 		long startTime, elapsedTime;
@@ -61,6 +61,8 @@ public abstract class ClusteringMethod {
 //		System.out.println("       Time: " + elapsedTime);
 		
 		System.out.println(performance+"\t"+elapsedTime+"\t"+clusters.size());
+		
+		return performance;
 
 	}
 
