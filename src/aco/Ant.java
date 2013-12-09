@@ -12,14 +12,14 @@ import java.util.Random;
 public class Ant {
 	
 	private Point2D.Double location;
-	double lastMoveX = 0;
-	double lastMoveY = 0;
-	Node holding = null;
-	Color colorEmpty = Color.MAGENTA;
-	Color colorHolding = Color.RED;
-	Color color = colorEmpty;
-	Random rand = new Random(11235);
-	double lastError;
+	private double lastMoveX = 0;
+	private double lastMoveY = 0;
+	private Node holding = null;
+	private Color colorEmpty = Color.MAGENTA;
+	private Color colorHolding = Color.RED;
+	private Color color = colorEmpty;
+	private Random rand = new Random(11235);
+	private double lastError;
 	
 	/**
 	 * Create an ant and place at a specified location.

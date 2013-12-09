@@ -7,10 +7,6 @@ public class Euclidean extends Distance {
 	/**
 	 * Calculates Euclidean distance between two vectors.
 	 */
-	public Euclidean() {
-		
-	}
-	
 	@Override
 	public Double distance(List<Double> vector1, List<Double> vector2) {
 		Double distance = 0.0;

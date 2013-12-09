@@ -2,7 +2,6 @@ package clustering;
 
 import java.util.List;
 
-import roc.TunableParameter;
 import tools.Tools;
 import aco.ACO;
 import aco.Ant;
@@ -56,18 +55,18 @@ public class ACOClustering extends ClusteringMethod {
 				kmeans.setPseudoGraph(aco.getGraph());
 				kmeans.cluster();
 				this.clusters = kmeans.clusters;
+				
+				//evaluate fitness after a clustering iteration has passed.
 				double fitness = fitnessEvaluation.getFitness(clusters);
 				System.out.println(Tools.round(fitness, 4));
 				
-				
+				//take best cluster seen so far as the best cluster
 				if (fitness > maxPerformance){
 					maxPerformance = fitness;
 					bestClustering = clusters;
 				}
 			}
 			clusters = bestClustering;
-			
-			// TODO: stop when fitness is optimal
 			
 		}
 		
@@ -99,11 +98,6 @@ public class ACOClustering extends ClusteringMethod {
 		
 	}
 
-	@Override
-	public void setTunableParameters(List<TunableParameter> tunableParameters) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	
 }

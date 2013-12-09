@@ -4,9 +4,6 @@ import java.util.List;
 
 public abstract class Distance {
 
-	public Distance() {
-		
-	}
 	
 	/**
 	 * A distance measure between two vectors of the same size.

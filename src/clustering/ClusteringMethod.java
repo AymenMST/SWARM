@@ -6,7 +6,6 @@ import graph.Node;
 
 import java.util.List;
 
-import roc.TunableParameter;
 import visualizer.JungHandler;
 import driver.DataPoint;
 
@@ -23,7 +22,6 @@ public abstract class ClusteringMethod {
 	protected JungHandler jungHandler = new JungHandler();
 	protected List<List<Node>> clusters;
 	protected GraphFitness fitnessEvaluation;
-	protected List<TunableParameter> tunableParameters;
 
 	/**
 	 * Constructs a generic TrainingMethod class.
@@ -108,7 +106,5 @@ public abstract class ClusteringMethod {
 		return clusters;
 	}
 
-	
-	public abstract void setTunableParameters(List<TunableParameter> tunableParameters);
 
 }

@@ -11,9 +11,9 @@ import driver.DataPoint;
 
 public class ACO {
 	
-	Random rand = new Random(11235);
-	Graph g = new Graph();
-	Colony colony;
+	private Random rand = new Random(11235);
+	private Graph g = new Graph();
+	private Colony colony;
 	
 	// initialize tunable parameters
 	static int numAnts = 20;

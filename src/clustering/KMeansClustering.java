@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import roc.TunableParameter;
 import tools.Tools;
 import distance.Distance;
 import distance.Euclidean;
@@ -293,20 +292,5 @@ public class KMeansClustering extends ClusteringMethod {
 		return clusters + "-Means Clustering";
 	}
 
-	@Override
-	public void setTunableParameters(List<TunableParameter> tunableParameters) {
-		try {
-			for (TunableParameter t : tunableParameters) {
-				switch(t.getParameterName()){
-				case "k":
-					k = (int) t.getValue();
-					break;
-				}
-			}
-		} catch (Exception e) {
-			System.out.println("Error");
-		}
-
-	}
 
 }

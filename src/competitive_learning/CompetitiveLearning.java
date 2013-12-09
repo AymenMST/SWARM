@@ -11,18 +11,15 @@ import driver.DataPoint;
 
 public class CompetitiveLearning {
 	
-	Network network;
-	NetworkOperations operations;
-	double learningRate = 0.8;
-	Layer inputLayer, outputLayer;
-	Map<Neuron, List<Connection>> weights;
+	private NetworkOperations operations;
+	private double learningRate = 0.8;
+	private Layer inputLayer;
+	private Map<Neuron, List<Connection>> weights;
 	
 	public CompetitiveLearning(Network network) {
-		this.network = network;
 		operations = new NetworkOperations(network);
 		// set up some convenience variables
 		inputLayer = network.getLayers().get(0);
-		outputLayer = network.getLayers().get(1);
 		weights = inputLayer.getOutGoingConnections();
 	}
 	

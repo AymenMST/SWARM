@@ -13,9 +13,9 @@ import graph.Node;
 
 public class Colony {
 	
-	Distance distance = new Euclidean();
-	List<Ant> ants = new ArrayList<Ant>();
-	Random rand = new Random(11235);
+	private Distance distance = new Euclidean();
+	private List<Ant> ants = new ArrayList<Ant>();
+	private Random rand = new Random(11235);
 	
 	/**
 	 * Creates a colony of ants.
