@@ -10,13 +10,13 @@ import graph.Node;
 public class Swarm {
 	
 	// initialize params
-	List<Particle> particles;
-	List<List<Node>> clusters;
-	Graph g = new Graph();
-	int numClusters;
-	double globalBestFitness = 0.0;
+	private List<Particle> particles;
+	private List<List<Node>> clusters;
+	private Graph g = new Graph();
+	private int numClusters;
+	private double globalBestFitness = 0.0;
 	protected static List<Double> globalBest;
-	double minValue, maxValue;
+	private double minValue, maxValue;
 	
 	/**
 	 * Creates a new swarm of particles.

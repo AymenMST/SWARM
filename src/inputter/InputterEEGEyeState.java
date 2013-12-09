@@ -18,6 +18,7 @@ public class InputterEEGEyeState extends Inputter {
 	public InputterEEGEyeState() {
 		inputs = 14;
 		outputs = 2;
+		name = "EEGEyeState";
 	}
 
 	@Override

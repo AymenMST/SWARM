@@ -15,6 +15,7 @@ public class InputterPoker extends Inputter{
 	public InputterPoker(){
 		inputs = 10;
 		outputs = 10;
+		name = "Poker";
 	}
 	
 	@Override

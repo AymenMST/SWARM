@@ -32,10 +32,20 @@ public class JungHandler {
 	private int imageCount = 1;
 	private int startVisualize = 0;
 
+	/**
+	 * Handle the visualization component of these clusters. 
+	 * 
+	 * The JUNG library (Java Universal Networking and Graphing) is used. 
+	 */
 	public JungHandler() {
 		
 	}
 	
+	/**
+	 * Update the visualizer with a new graph object. This re-renders the visualization to show a new graph
+	 * 
+	 * @param graph
+	 */
 	public void setGraph(Graph graph) {
 		layout = new TreeLayout<>(graph);
 		viewer = new BasicVisualizationServer<>(layout);
@@ -48,6 +58,7 @@ public class JungHandler {
         };
 		viewer.getRenderContext().setVertexFillPaintTransformer(vertexColor);
 		
+		//put each node in a 2-D spot on the graph
 		for (Node n : graph.getVertices()) {
 			layout.setLocation(n, n.getLocation());
 		}
@@ -55,12 +66,18 @@ public class JungHandler {
 		frame.add(viewer, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Renders the graph. This can be rendered to (1) the JUNG window or (2) a large list of images.
+	 */
 	public void draw() {
 		if (imageCount > startVisualize) {
+			
+			//set the frame to the correct size
 			frame.setSize(width, height);
 			if (saveImages) {
 				try
 		        {   
+					//save images in a directory
 					frame.pack();
 		            image = new BufferedImage(viewer.getWidth(), viewer.getHeight(), BufferedImage.TYPE_INT_RGB);
 		            Graphics2D graphics2D = image.createGraphics();
@@ -70,6 +87,8 @@ public class JungHandler {
 		        }
 		        catch(Exception exception) { System.out.println("Could not save image"); }
 			} else {
+				
+				//display graph to window
 				try {
 					Thread.sleep(200);
 				} catch (InterruptedException e) {	e.printStackTrace();	}
@@ -80,11 +99,22 @@ public class JungHandler {
 		imageCount++;
 	}
 	
+	/**
+	 * Sets the dimension of the visualization viewer
+	 * 
+	 * @param width			width of frame
+	 * @param height		height of frame
+	 */
 	public void setDimensions(int width, int height) {
 		this.width = width + padding*2;
 		this.height = height + padding*2;
 	}
 	
+	/**
+	 * method to save images to a certain file.
+	 * 
+	 * @param folder directory to save images to
+	 */
 	public void saveImagesTo(String folder) {
 		File directory = new File(folder);
 		if (directory.isDirectory()) {
@@ -96,10 +126,19 @@ public class JungHandler {
 		}
 	}
 	
+	/**
+	 * boolean to return if we are saving images or not
+	 * @return
+	 */
 	public boolean isSavingImages() {
 		return saveImages;
 	}
 	
+	/**
+	 * set the visualization frame to the correct size
+	 * 
+	 * @param frame
+	 */
 	public void setStartVisualize(int frame) {
 		this.startVisualize = frame;
 	}

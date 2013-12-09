@@ -15,7 +15,7 @@ public class InputterSemeion extends Inputter {
 	public InputterSemeion() {
 		inputs = 256;
 		outputs = 10;
-
+		name = "Semeion";
 	}
 
 	@Override

@@ -15,7 +15,7 @@ public class InputterPenDigits extends Inputter {
 	public InputterPenDigits() {
 		inputs = 16;
 		outputs = 10;
-
+		name = "PenDigits";
 	}
 
 	@Override

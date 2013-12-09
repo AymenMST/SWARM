@@ -7,12 +7,12 @@ import java.util.List;
 public class DunnGraphFitness extends GraphFitness {
 	
 	/**
+	 * The Dunn index fitness value
+	 * 
+	 * This value is the ratio of distance between centers : maximum average distance between two centers
+	 * 
 	 * http://en.wikipedia.org/wiki/Dunn_index
 	 */
-	public DunnGraphFitness() {
-		
-	}
-	
 	@Override
 	public double getFitness(List<List<Node>> clusters) {
 		
@@ -38,6 +38,9 @@ public class DunnGraphFitness extends GraphFitness {
 				}
 			}
 		}
+		
+		// reset centers in case called again
+		centers = null;
 		
 		return fitness;
 	}

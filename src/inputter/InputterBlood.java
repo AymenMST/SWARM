@@ -15,6 +15,7 @@ public class InputterBlood extends Inputter {
 	public InputterBlood() {
 		inputs = 4;
 		outputs = 2;
+		name = "Blood";
 	}
 
 	@Override

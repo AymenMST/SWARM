@@ -9,13 +9,13 @@ import tools.Tools;
 public class Particle {
 	
 	// initialize params
-	Random random = new Random(11235);
+	private Random random = new Random(11235);
 	private double fitness;
-	List<Double> velocity;
-	List<Double> location;
-	List<Double> personalBest;
+	private List<Double> velocity;
+	private List<Double> location;
+	private List<Double> personalBest;
 	private double bestFitness = 0.0;
-	double minValue, maxValue;
+	private double minValue, maxValue;
 	
 	/**
 	 * Create a new particle 

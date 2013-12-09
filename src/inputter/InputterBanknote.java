@@ -15,6 +15,7 @@ public class InputterBanknote extends Inputter {
 	public InputterBanknote() {
 		inputs = 4;
 		outputs = 2;
+		name = "Banknote";
 	}
 
 	@Override

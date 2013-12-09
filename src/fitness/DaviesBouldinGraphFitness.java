@@ -6,13 +6,17 @@ import java.util.List;
 
 public class DaviesBouldinGraphFitness extends GraphFitness {
 	
+	
+	
 	/**
+	 * DaviesBouldinGraphFitness method of finding cluster fitness. 
+	 * 
+	 * This fitness value is a euclidean distance between the centroid of a cluster and the individual feature vectors. 
+	 * 
+	 * The value is the maximum ratio of average distance from features to center : distance between centers
+	 * 
 	 * http://en.wikipedia.org/wiki/Davies%E2%80%93Bouldin_index
 	 */
-	public DaviesBouldinGraphFitness() {
-		
-	}
-	
 	@Override
 	public double getFitness(List<List<Node>> clusters) {
 		

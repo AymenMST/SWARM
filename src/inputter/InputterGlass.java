@@ -15,6 +15,7 @@ public class InputterGlass extends Inputter {
 	public InputterGlass() {
 		inputs = 9;
 		outputs = 6;
+		name = "Glass";
 	}
 
 	@Override
